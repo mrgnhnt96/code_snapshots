@@ -30,11 +30,22 @@ export class CodeSnapshotGenerator {
         this.width = canvasWidth;
         this.height = canvasHeight;
 
+        // Apply image border radius clipping if specified
+        const imageBorderRadius = this.config.styling.imageBorderRadius;
+        if (imageBorderRadius && imageBorderRadius > 0) {
+            this.applyImageBorderRadius(ctx, imageBorderRadius);
+        }
+
         // Draw gradient background
         this.drawGradientBackground(ctx);
 
         // Draw semi-transparent card
         this.drawCodeCard(ctx, code);
+
+        // Restore context if clipping was applied
+        if (imageBorderRadius && imageBorderRadius > 0) {
+            ctx.restore();
+        }
 
         // Save the image
         const buffer = canvas.toBuffer('image/png');
@@ -146,6 +157,23 @@ export class CodeSnapshotGenerator {
         // Draw code with syntax highlighting
         const codeY = cardY + topSpacing;
         this.drawCode(ctx, code, cardX + this.cardPadding, codeY, cardWidth - 2 * this.cardPadding);
+    }
+
+    private applyImageBorderRadius(ctx: CanvasRenderingContext2D, radius: number): void {
+        // Create a clipping path for the entire image
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(radius, 0);
+        ctx.lineTo(this.width - radius, 0);
+        ctx.quadraticCurveTo(this.width, 0, this.width, radius);
+        ctx.lineTo(this.width, this.height - radius);
+        ctx.quadraticCurveTo(this.width, this.height, this.width - radius, this.height);
+        ctx.lineTo(radius, this.height);
+        ctx.quadraticCurveTo(0, this.height, 0, this.height - radius);
+        ctx.lineTo(0, radius);
+        ctx.quadraticCurveTo(0, 0, radius, 0);
+        ctx.closePath();
+        ctx.clip();
     }
 
     private drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {

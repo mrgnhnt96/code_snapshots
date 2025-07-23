@@ -21,5 +21,6 @@ export interface SnapshotConfig {
             vertical?: number;
         };
         borderRadius?: number;
+        imageBorderRadius?: number;
     };
 } 

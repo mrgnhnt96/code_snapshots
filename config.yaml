@@ -20,3 +20,4 @@ styling:
     horizontal: 40
     vertical: 40
   borderRadius: 25
+  imageBorderRadius: 40

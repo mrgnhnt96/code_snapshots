@@ -136,6 +136,14 @@
           "maximum": 50,
           "default": 15,
           "examples": [0, 8, 15, 20, 25]
+        },
+        "imageBorderRadius": {
+          "type": "number",
+          "description": "Border radius for the entire image in pixels",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 0,
+          "examples": [0, 10, 20, 30, 50]
         }
       },
       "additionalProperties": false
