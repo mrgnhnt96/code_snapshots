@@ -116,7 +116,7 @@ export class CodeSnapshotGenerator {
 
         // Draw line numbers if enabled
         if (this.config.styling.showLineNumbers) {
-            this.drawLineNumbers(ctx, x, y, lines.length);
+            this.drawLineNumbers(ctx, x + 10, y, lines.length); // Add 10px left padding to line numbers
             x += 25; // Reduce space between line numbers and code
         }
 
