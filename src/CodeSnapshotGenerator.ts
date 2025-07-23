@@ -129,7 +129,13 @@ export class CodeSnapshotGenerator {
 
             case 'gradient':
                 if (background.colors && background.colors.length > 0) {
-                    const gradient = ctx.createLinearGradient(0, 0, 0, this.height);
+                    // Get gradient direction with default fallback
+                    const direction = background.direction || 'to-bottom';
+
+                    // Calculate gradient coordinates based on direction
+                    const { x0, y0, x1, y1 } = this.getGradientCoordinates(direction);
+
+                    const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
 
                     // Sort colors by stop position
                     const sortedColors = [...background.colors].sort((a, b) => a.stop - b.stop);
@@ -143,6 +149,30 @@ export class CodeSnapshotGenerator {
                     ctx.fillRect(0, 0, this.width, this.height);
                 }
                 break;
+        }
+    }
+
+    private getGradientCoordinates(direction: string): { x0: number; y0: number; x1: number; y1: number } {
+        switch (direction) {
+            case 'to-bottom':
+                return { x0: 0, y0: 0, x1: 0, y1: this.height };
+            case 'to-top':
+                return { x0: 0, y0: this.height, x1: 0, y1: 0 };
+            case 'to-right':
+                return { x0: 0, y0: 0, x1: this.width, y1: 0 };
+            case 'to-left':
+                return { x0: this.width, y0: 0, x1: 0, y1: 0 };
+            case 'to-bottom-right':
+                return { x0: 0, y0: 0, x1: this.width, y1: this.height };
+            case 'to-bottom-left':
+                return { x0: this.width, y0: 0, x1: 0, y1: this.height };
+            case 'to-top-right':
+                return { x0: 0, y0: this.height, x1: this.width, y1: 0 };
+            case 'to-top-left':
+                return { x0: this.width, y0: this.height, x1: 0, y1: 0 };
+            default:
+                // Default to to-bottom
+                return { x0: 0, y0: 0, x1: 0, y1: this.height };
         }
     }
 

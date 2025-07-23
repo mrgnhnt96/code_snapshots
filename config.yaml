@@ -27,6 +27,7 @@ styling:
         stop: 0.0
       - color: "#3b82f6"
         stop: 1.0
+    direction: to-bottom-right
   showLineNumbers: true
   lineNumberStart: 1 # Starting line number (defaults to 1)
   showLintMessages: false

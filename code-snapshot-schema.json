@@ -213,6 +213,22 @@
                       { "color": "#1e3a8a", "stop": 1.0 }
                     ]
                   ]
+                },
+                "direction": {
+                  "type": "string",
+                  "description": "Gradient direction",
+                  "enum": [
+                    "to-bottom",
+                    "to-top",
+                    "to-right",
+                    "to-left",
+                    "to-bottom-right",
+                    "to-bottom-left",
+                    "to-top-right",
+                    "to-top-left"
+                  ],
+                  "default": "to-bottom",
+                  "examples": ["to-bottom", "to-right", "to-bottom-right"]
                 }
               },
               "additionalProperties": false

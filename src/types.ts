@@ -31,6 +31,7 @@ export interface SnapshotConfig {
                 color: string;
                 stop: number; // 0.0 to 1.0
             }>; // For 'gradient' type
+            direction?: 'to-bottom' | 'to-top' | 'to-right' | 'to-left' | 'to-bottom-right' | 'to-bottom-left' | 'to-top-right' | 'to-top-left'; // For 'gradient' type
         };
         showLineNumbers: boolean;
         lineNumberStart?: number; // Starting line number (defaults to 1)
