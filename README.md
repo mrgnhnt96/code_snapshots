@@ -134,11 +134,13 @@ You can customize the appearance by modifying the `config.yaml` file:
 
 ### Overflow Detection
 
-The generator automatically detects when text extends beyond the card boundaries and logs helpful warnings:
+The generator automatically detects when code extends beyond the card's content area and logs helpful warnings:
 
 ```
-⚠️  Text extends past card horizontally by 239 pixels
-⚠️  Text extends past card vertically by 90 pixels
+⚠️  Code extends past card content area horizontally by 239 pixels
+   Consider increasing card width or reducing font size
+⚠️  Code extends past card content area vertically by 90 pixels
+   Consider increasing card height or reducing line count
 ```
 
 For advanced customization, you can also modify the constants in `CodeSnapshotGenerator.ts`:

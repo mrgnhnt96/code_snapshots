@@ -1,0 +1,19 @@
+# Test Configuration for Proper Fit
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./fit-test.png"
+  width: 600
+  height: 400
+
+styling:
+  cardTransparency: 0.8
+  showWindowControls: true
+  backgroundColor: "#1e3a8a"
+  gradientMiddleColor: "#3b82f6"
+  showLineNumbers: true
+  showFileName: true
+  windowControlStyle: "filled"

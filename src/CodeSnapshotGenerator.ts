@@ -170,17 +170,22 @@ export class CodeSnapshotGenerator {
     }
 
     private checkOverflow(textMetrics: { maxWidth: number; totalHeight: number }, cardWidth: number, cardHeight: number, topSpacing: number): void {
-        const availableWidth = cardWidth - 2 * this.cardPadding;
-        const availableHeight = cardHeight - topSpacing - this.cardPadding;
+        // Calculate the actual content area within the card
+        const contentWidth = cardWidth - 2 * this.cardPadding;
+        const contentHeight = cardHeight - topSpacing - this.cardPadding;
 
-        if (textMetrics.maxWidth > availableWidth) {
-            const overflowX = textMetrics.maxWidth - availableWidth;
-            console.log(`⚠️  Text extends past card horizontally by ${Math.round(overflowX)} pixels`);
+        // Check horizontal overflow (text width vs content area width)
+        if (textMetrics.maxWidth > contentWidth) {
+            const overflowX = textMetrics.maxWidth - contentWidth;
+            console.log(`⚠️  Code extends past card content area horizontally by ${Math.round(overflowX)} pixels`);
+            console.log(`   Consider increasing card width or reducing font size`);
         }
 
-        if (textMetrics.totalHeight > availableHeight) {
-            const overflowY = textMetrics.totalHeight - availableHeight;
-            console.log(`⚠️  Text extends past card vertically by ${Math.round(overflowY)} pixels`);
+        // Check vertical overflow (text height vs content area height)
+        if (textMetrics.totalHeight > contentHeight) {
+            const overflowY = textMetrics.totalHeight - contentHeight;
+            console.log(`⚠️  Code extends past card content area vertically by ${Math.round(overflowY)} pixels`);
+            console.log(`   Consider increasing card height or reducing line count`);
         }
     }
 
