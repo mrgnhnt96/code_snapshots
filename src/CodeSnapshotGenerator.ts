@@ -55,7 +55,7 @@ export class CodeSnapshotGenerator {
         const textMetrics = this.calculateTextDimensions(ctx, lines);
 
         // Calculate card dimensions with proper spacing
-        const topSpacing = this.config.styling.showWindowControls ? 35 : 20; // Reduced space for window controls
+        const topSpacing = this.config.styling.showWindowControls ? 45 : 20; // Increased space for window controls
         const cardWidth = Math.min(this.width - 2 * this.padding, textMetrics.maxWidth + 2 * this.cardPadding);
         const cardHeight = Math.min(this.height - 2 * this.padding, textMetrics.totalHeight + topSpacing + this.cardPadding);
 
