@@ -19,6 +19,7 @@ output:
   height: null
 
 styling:
+  windowControl: hidden
   cardBackground:
     type: "layered"
     transparency: 0.3
@@ -39,7 +40,6 @@ styling:
   showLintMessages: false
   fileName: "index.dart"
   fileIcon: null # Path to custom icon file (e.g., "./assets/dart-icon.png")
-  windowControl: "outlined"
   cardMargin:
     horizontal: 80
     vertical: 80
@@ -56,3 +56,4 @@ styling:
     variable: "#f8f8f2" # Dracula foreground
     operator: "#ff79c6" # Dracula pink
     punctuation: "#f8f8f2" # Dracula foreground
+    expression: "#f8f8f2"

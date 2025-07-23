@@ -41,7 +41,7 @@ themeFiles.forEach((themeFile) => {
   try {
     const themeName = path.basename(themeFile, path.extname(themeFile));
     console.log(`Generating ${themeName} theme...`);
-    execSync(`node dist/index.js "${themeFile}"`, {
+    execSync(`npm run dev "${themeFile}"`, {
       stdio: "inherit",
     });
     console.log(`✅ ${themeName} theme generated successfully!\n`);

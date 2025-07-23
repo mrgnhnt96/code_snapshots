@@ -65,7 +65,7 @@ export class CodeSnapshotGenerator {
         const textMetrics = this.calculateTextDimensions(tempCtx, lines);
 
         // Calculate content dimensions
-        let topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 25;
+        let topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 41;
 
         // Add space for file header if fileName is specified
         if (this.config.styling.fileName) {
@@ -184,7 +184,7 @@ export class CodeSnapshotGenerator {
         const textMetrics = this.calculateTextDimensions(ctx, lines);
 
         // Calculate card dimensions with proper spacing
-        let topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 25; // Increased space for window controls
+        let topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 41; // Increased space for window controls
 
         // Add space for file header if fileName is specified
         if (this.config.styling.fileName) {
