@@ -16,8 +16,8 @@ export class CodeSnapshotGenerator {
 
     constructor(config: SnapshotConfig) {
         this.config = config;
-        this.width = config.output.width;
-        this.height = config.output.height;
+        this.width = config.output.width != null ? config.output.width : 800; // Default width if null/undefined
+        this.height = config.output.height != null ? config.output.height : 600; // Default height if null/undefined
     }
 
     async generateSnapshot(code: string, outputPath: string): Promise<void> {
@@ -55,8 +55,17 @@ export class CodeSnapshotGenerator {
 
         // Calculate card dimensions with proper spacing
         const topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 20; // Increased space for window controls
-        const cardWidth = Math.min(this.width - 2 * this.padding, textMetrics.maxWidth + 2 * this.cardPadding);
-        const cardHeight = Math.min(this.height - 2 * this.padding, textMetrics.totalHeight + topSpacing + this.cardPadding);
+
+        // Calculate content-based dimensions
+        const contentWidth = textMetrics.maxWidth + 2 * this.cardPadding;
+        const contentHeight = textMetrics.totalHeight + topSpacing + this.cardPadding;
+
+        // If width/height are null/undefined, use content size with padding
+        const maxCardWidth = this.config.output.width != null ? this.width - 2 * this.padding : contentWidth + 2 * this.padding;
+        const maxCardHeight = this.config.output.height != null ? this.height - 2 * this.padding : contentHeight + 2 * this.padding;
+
+        const cardWidth = Math.min(maxCardWidth, contentWidth);
+        const cardHeight = Math.min(maxCardHeight, contentHeight);
 
         const cardX = (this.width - cardWidth) / 2;
         const cardY = (this.height - cardHeight) / 2;

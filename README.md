@@ -66,8 +66,8 @@ input:
 
 output:
   path: "./code-snapshot.png" # Output file path
-  width: 800 # Image width
-  height: 600 # Image height
+  width: 800 # Image width (null = auto-size)
+  height: 600 # Image height (null = auto-size)
 
 styling:
   cardTransparency: 0.8 # Card transparency (0.0-1.0)
@@ -126,7 +126,7 @@ The generator will create a PNG image with:
 
 You can customize the appearance by modifying the `config.yaml` file:
 
-- **Image dimensions**: `output.width` and `output.height`
+- **Image dimensions**: `output.width` and `output.height` (null/undefined = auto-size to content)
 - **Card transparency**: `styling.cardTransparency` (0.0-1.0)
 - **Window controls**: `styling.windowControl` ("filled", "outlined", or "hidden")
 - **Line numbers**: `styling.showLineNumbers` (true/false)

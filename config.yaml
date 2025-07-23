@@ -6,8 +6,8 @@ input:
 
 output:
   path: "./code-snapshot.png"
-  width: 800
-  height: 600
+  width: null
+  height: null
 
 styling:
   cardTransparency: 0.8

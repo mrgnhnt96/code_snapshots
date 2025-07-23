@@ -6,8 +6,8 @@ export interface SnapshotConfig {
     };
     output: {
         path: string;
-        width: number;
-        height: number;
+        width?: number | null;
+        height?: number | null;
     };
     styling: {
         cardTransparency: number;

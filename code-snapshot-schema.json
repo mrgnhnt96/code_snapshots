@@ -33,7 +33,7 @@
     "output": {
       "type": "object",
       "description": "Output image configuration",
-      "required": ["path", "width", "height"],
+      "required": ["path"],
       "properties": {
         "path": {
           "type": "string",
@@ -42,20 +42,20 @@
           "examples": ["./code-snapshot.png", "./output/my-snapshot.png"]
         },
         "width": {
-          "type": "integer",
-          "description": "Image width in pixels",
+          "type": ["integer", "null"],
+          "description": "Image width in pixels (null/undefined = auto-size to content)",
           "minimum": 200,
           "maximum": 2000,
           "default": 800,
-          "examples": [600, 800, 1200]
+          "examples": [600, 800, 1200, null]
         },
         "height": {
-          "type": "integer",
-          "description": "Image height in pixels",
+          "type": ["integer", "null"],
+          "description": "Image height in pixels (null/undefined = auto-size to content)",
           "minimum": 200,
           "maximum": 2000,
           "default": 600,
-          "examples": [400, 600, 800]
+          "examples": [400, 600, 800, null]
         }
       },
       "additionalProperties": false
