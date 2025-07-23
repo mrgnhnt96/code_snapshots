@@ -1,14 +1,22 @@
 import { createCanvas, Canvas, CanvasRenderingContext2D } from 'canvas';
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-dart';
+import { SnapshotConfig } from './types';
 
 export class CodeSnapshotGenerator {
-    private readonly width = 800;
-    private readonly height = 600;
+    private readonly config: SnapshotConfig;
+    private readonly width: number;
+    private readonly height: number;
     private readonly padding = 40;
     private readonly cardPadding = 20;
     private readonly lineHeight = 24;
     private readonly fontSize = 14;
+
+    constructor(config: SnapshotConfig) {
+        this.config = config;
+        this.width = config.output.width;
+        this.height = config.output.height;
+    }
 
     async generateSnapshot(code: string, outputPath: string): Promise<void> {
         const canvas = createCanvas(this.width, this.height);
@@ -28,9 +36,9 @@ export class CodeSnapshotGenerator {
 
     private drawGradientBackground(ctx: CanvasRenderingContext2D): void {
         const gradient = ctx.createLinearGradient(0, 0, 0, this.height);
-        gradient.addColorStop(0, '#1e3a8a');   // Dark blue at top
-        gradient.addColorStop(0.5, '#3b82f6'); // Medium blue in middle
-        gradient.addColorStop(1, '#1e3a8a');   // Dark blue at bottom
+        gradient.addColorStop(0, this.config.styling.backgroundColor);
+        gradient.addColorStop(0.5, this.config.styling.gradientMiddleColor);
+        gradient.addColorStop(1, this.config.styling.backgroundColor);
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, this.width, this.height);
@@ -48,7 +56,8 @@ export class CodeSnapshotGenerator {
         const cardY = (this.height - cardHeight) / 2;
 
         // Draw semi-transparent card background
-        ctx.fillStyle = 'rgba(30, 30, 30, 0.9)';
+        const transparency = this.config.styling.cardTransparency;
+        ctx.fillStyle = `rgba(30, 30, 30, ${transparency})`;
         ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
         ctx.shadowBlur = 20;
         ctx.shadowOffsetX = 0;
@@ -57,6 +66,11 @@ export class CodeSnapshotGenerator {
         // Rounded rectangle
         this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, 15);
         ctx.fill();
+
+        // Draw macOS window controls if enabled
+        if (this.config.styling.showWindowControls) {
+            this.drawWindowControls(ctx, cardX, cardY, cardWidth);
+        }
 
         // Reset shadow
         ctx.shadowColor = 'transparent';
@@ -161,5 +175,30 @@ export class CodeSnapshotGenerator {
             default:
                 return '#ffffff'; // White
         }
+    }
+
+    private drawWindowControls(ctx: CanvasRenderingContext2D, cardX: number, cardY: number, cardWidth: number): void {
+        const controlSize = 12;
+        const controlSpacing = 8;
+        const controlY = cardY + 15;
+        const startX = cardX + 20;
+
+        // Close button (red)
+        ctx.fillStyle = '#ff5f57';
+        ctx.beginPath();
+        ctx.arc(startX, controlY, controlSize, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Minimize button (yellow)
+        ctx.fillStyle = '#ffbd2e';
+        ctx.beginPath();
+        ctx.arc(startX + controlSize + controlSpacing, controlY, controlSize, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Maximize button (green)
+        ctx.fillStyle = '#28ca42';
+        ctx.beginPath();
+        ctx.arc(startX + 2 * (controlSize + controlSpacing), controlY, controlSize, 0, 2 * Math.PI);
+        ctx.fill();
     }
 } 

@@ -1,38 +1,52 @@
 import { CodeSnapshotGenerator } from './CodeSnapshotGenerator';
+import { SnapshotConfig } from './types';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as yaml from 'js-yaml';
 
 async function main() {
     const args = process.argv.slice(2);
 
     if (args.length === 0) {
-        console.log('Usage: npm run dev <path-to-dart-file> [output-path]');
-        console.log('Example: npm run dev ./example.dart ./output.png');
+        console.log('Usage: npm run dev <path-to-config-file>');
+        console.log('Example: npm run dev ./config.yaml');
         process.exit(1);
     }
 
-    const inputPath = args[0];
-    const outputPath = args[1] || './code-snapshot.png';
+    const configPath = args[0];
 
-    // Check if input file exists
-    if (!fs.existsSync(inputPath)) {
-        console.error(`Error: File '${inputPath}' does not exist`);
-        process.exit(1);
-    }
-
-    // Check if it's a Dart file
-    if (!inputPath.endsWith('.dart')) {
-        console.error(`Error: File '${inputPath}' is not a Dart file`);
+    // Check if config file exists
+    if (!fs.existsSync(configPath)) {
+        console.error(`Error: Config file '${configPath}' does not exist`);
         process.exit(1);
     }
 
     try {
-        const code = fs.readFileSync(inputPath, 'utf-8');
-        const generator = new CodeSnapshotGenerator();
+        // Load and parse YAML config
+        const configFile = fs.readFileSync(configPath, 'utf-8');
+        const config: SnapshotConfig = yaml.load(configFile) as SnapshotConfig;
 
-        console.log(`Generating code snapshot for: ${inputPath}`);
-        await generator.generateSnapshot(code, outputPath);
-        console.log(`Snapshot saved to: ${outputPath}`);
+        // Validate config
+        if (!config.input?.file || !fs.existsSync(config.input.file)) {
+            console.error(`Error: Input file '${config.input?.file}' does not exist`);
+            process.exit(1);
+        }
+
+        // Read the Dart file
+        const fullCode = fs.readFileSync(config.input.file, 'utf-8');
+        const lines = fullCode.split('\n');
+
+        // Extract the specified lines
+        const startLine = Math.max(0, config.input.startLine - 1); // Convert to 0-based index
+        const endLine = Math.min(lines.length, config.input.endLine);
+        const selectedLines = lines.slice(startLine, endLine);
+        const code = selectedLines.join('\n');
+
+        console.log(`Generating code snapshot for: ${config.input.file} (lines ${config.input.startLine}-${config.input.endLine})`);
+
+        const generator = new CodeSnapshotGenerator(config);
+        await generator.generateSnapshot(code, config.output.path);
+        console.log(`Snapshot saved to: ${config.output.path}`);
     } catch (error) {
         console.error('Error generating code snapshot:', error);
         process.exit(1);

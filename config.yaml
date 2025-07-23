@@ -1,0 +1,16 @@
+# Code Snapshot Configuration
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./code-snapshot.png"
+  width: 800
+  height: 600
+
+styling:
+  cardTransparency: 0.8
+  showWindowControls: true
+  backgroundColor: "#1e3a8a"
+  gradientMiddleColor: "#3b82f6"

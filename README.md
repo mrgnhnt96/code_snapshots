@@ -30,27 +30,50 @@ npm run build
 ### Development Mode
 
 ```bash
-npm run dev <path-to-dart-file> [output-path]
+npm run dev <path-to-config-file>
 ```
 
 ### Production Mode
 
 ```bash
-npm run start <path-to-dart-file> [output-path]
+npm run start <path-to-config-file>
 ```
 
 ### Examples
 
-Generate a snapshot from the example file:
+Generate a snapshot using the default config:
 
 ```bash
-npm run dev ./example.dart
+npm run dev ./config.yaml
 ```
 
-Generate a snapshot with custom output path:
+Generate a snapshot with custom config:
 
 ```bash
-npm run dev ./example.dart ./my-snapshot.png
+npm run dev ./my-config.yaml
+```
+
+## Configuration
+
+The generator uses YAML configuration files to specify input, output, and styling options:
+
+```yaml
+# Code Snapshot Configuration
+input:
+  file: "./example.dart" # Path to Dart file
+  startLine: 37 # Starting line number (inclusive)
+  endLine: 46 # Ending line number (inclusive)
+
+output:
+  path: "./code-snapshot.png" # Output file path
+  width: 800 # Image width
+  height: 600 # Image height
+
+styling:
+  cardTransparency: 0.8 # Card transparency (0.0-1.0)
+  showWindowControls: true # Show macOS-style window controls
+  backgroundColor: "#1e3a8a" # Dark blue for gradient
+  gradientMiddleColor: "#3b82f6" # Medium blue for gradient middle
 ```
 
 ## Example Output
@@ -58,7 +81,7 @@ npm run dev ./example.dart ./my-snapshot.png
 The generator will create a PNG image with:
 
 - Blue gradient background (dark blue at top/bottom, lighter in middle)
-- Semi-transparent dark card with rounded corners
+- Semi-transparent dark card with rounded corners and macOS-style window controls
 - Syntax-highlighted Dart code with line numbers
 - Color scheme:
   - Keywords: Purple
@@ -75,8 +98,10 @@ The generator will create a PNG image with:
 ```
 ├── src/
 │   ├── index.ts              # Main entry point
-│   └── CodeSnapshotGenerator.ts  # Core snapshot generation logic
+│   ├── CodeSnapshotGenerator.ts  # Core snapshot generation logic
+│   └── types.ts              # TypeScript interfaces
 ├── example.dart              # Example Dart file for testing
+├── config.yaml               # Configuration file
 ├── package.json              # Dependencies and scripts
 ├── tsconfig.json             # TypeScript configuration
 └── README.md                 # This file
@@ -86,17 +111,24 @@ The generator will create a PNG image with:
 
 - **canvas**: For image generation
 - **prismjs**: For Dart syntax highlighting
+- **js-yaml**: For YAML configuration parsing
 - **typescript**: For TypeScript compilation
 - **@types/node**: TypeScript definitions for Node.js
 
 ## Customization
 
-You can modify the appearance by editing the constants in `CodeSnapshotGenerator.ts`:
+You can customize the appearance by modifying the `config.yaml` file:
 
-- `width` and `height`: Image dimensions
+- **Image dimensions**: `output.width` and `output.height`
+- **Card transparency**: `styling.cardTransparency` (0.0-1.0)
+- **Window controls**: `styling.showWindowControls` (true/false)
+- **Background colors**: `styling.backgroundColor` and `styling.gradientMiddleColor`
+- **Code selection**: `input.startLine` and `input.endLine`
+
+For advanced customization, you can also modify the constants in `CodeSnapshotGenerator.ts`:
+
 - `padding`: Outer padding
 - `cardPadding`: Inner card padding
 - `lineHeight`: Line spacing
 - `fontSize`: Text size
 - Colors in `getTokenColor()` method
-- Gradient colors in `drawGradientBackground()`
