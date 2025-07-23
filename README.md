@@ -370,3 +370,13 @@ For advanced customization, you can also modify the constants in `CodeSnapshotGe
 - `windowControlSize`: Size of window control circles (8px)
 - `windowControlSpacing`: Spacing between window controls (12px)
 - Colors in `getTokenColor()` method
+
+---
+
+## 🤖 AI-Built Disclaimer
+
+This project was crafted entirely by AI agents (no humans were harmed in the making of this code). While we've done our best to make it work perfectly, there might be some quirks or bugs lurking in the shadows.
+
+If you stumble across anything that needs fixing, don't hesitate to create an issue! I'll just prompt another AI agent to fix it - it's like having an infinite supply of digital interns, but without the coffee runs. 😄
+
+_Note: The AI agents promise they're not plotting world domination... yet._
