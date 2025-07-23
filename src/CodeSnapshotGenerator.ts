@@ -205,6 +205,19 @@ export class CodeSnapshotGenerator {
         this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, borderRadius);
         ctx.fill();
 
+        // Draw borders
+        // Black border (0.8px) - on the outermost edge
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.lineWidth = 0.8;
+        this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, borderRadius);
+        ctx.stroke();
+
+        // Light gray/white border (1px) - drawn slightly inside
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 1;
+        this.drawRoundedRect(ctx, cardX + 0.5, cardY + 0.5, cardWidth - 1, cardHeight - 1, borderRadius);
+        ctx.stroke();
+
         // Draw macOS window controls if enabled
         if (this.config.styling.windowControl !== 'hidden') {
             this.drawWindowControls(ctx, cardX, cardY, cardWidth);
