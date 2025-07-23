@@ -63,6 +63,9 @@ export interface SnapshotConfig {
             variable?: string; // Light blue by default
             operator?: string; // White by default
             punctuation?: string; // White by default
+            'plain-text'?: string; // White by default (for variables, parameters, etc.)
+            'expression'?: string; // Dark gray by default (for expressions in interpolations)
+            'string-literal'?: string; // Red by default (for string literals)
         };
     };
 } 

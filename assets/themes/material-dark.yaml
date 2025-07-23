@@ -1,46 +1,47 @@
-# Material Dark Theme Configuration
 input:
   file: "./example.dart"
   startLine: 37
   endLine: 46
-  lints:
-    - start: { line: 39, char: 1 }
-      end: { line: 39, char: 10 }
-      type: error
-      message: "Deprecated method"
 
 output:
   path: "./assets/material-dark-snapshot.png"
-  width: null
-  height: null
+  width: 800
+  height: 600
 
 styling:
   cardBackground:
     type: "filled"
-    transparency: 1.0
-    color: "#424242"
+    transparency: 0.85
+    color: "#1e1e1e"
   background:
-    type: "filled"
-    color: "#121212"
+    type: "gradient"
+    colors:
+      - color: "#121212"
+        stop: 0.0
+      - color: "#1e1e1e"
+        stop: 0.7
+      - color: "#2d2d2d"
+        stop: 1.0
+    direction: "to-bottom-right"
   showLineNumbers: true
   lineNumberStart: 37
-  showLintMessages: false
-  fileName: "widget.dart"
-  fileIcon: null
-  windowControl: "outlined"
+  fileName: "example.dart"
+  windowControl: "hidden"
   cardMargin:
-    horizontal: 100
-    vertical: 100
-  borderRadius: 20
-  imageBorderRadius: 30
+    horizontal: 60
+    vertical: 60
+  borderRadius: 16
+  imageBorderRadius: 20
   tokenColors:
     keyword: "#c792ea"
-    function: "#82aaff"
-    method: "#82aaff"
+    function: "#ffcb6b"
+    method: "#ffcb6b"
     string: "#c3e88d"
     number: "#f78c6c"
     comment: "#546e7a"
-    class-name: "#ffcb8b"
-    variable: "#e1e1e1"
+    class-name: "#89ddff"
+    variable: "#82aaff"
     operator: "#c792ea"
-    punctuation: "#e1e1e1"
+    punctuation: "#ffffff"
+    plain-text: "#82aaff"
+    expression: "#82aaff"

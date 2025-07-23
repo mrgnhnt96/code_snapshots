@@ -10,7 +10,7 @@ A TypeScript project that creates beautiful code snapshots with Dart syntax high
 - 📝 Line numbers
 - 💾 Outputs high-quality PNG images
 - 🖼️ Similar styling to the reference image
-- 🌈 7 included popular themes (Dracula, GitHub Dark, Material Dark, Nord, Tokyo Night, One Dark, Monokai)
+- 🌈 9 included popular themes (Dracula, GitHub Dark, Material Dark, Nord, Tokyo Night, One Dark, Monokai, Cyberpunk, Sunset)
 - 🚀 One-command theme generation with `npm run examples`
 
 ## Installation
@@ -82,6 +82,12 @@ npm run dev ./assets/themes/one-dark.yaml
 
 # Monokai theme
 npm run dev ./assets/themes/monokai.yaml
+
+# Cyberpunk theme
+npm run dev ./assets/themes/cyberpunk.yaml
+
+# Sunset theme
+npm run dev ./assets/themes/sunset.yaml
 ```
 
 ## Configuration
@@ -97,6 +103,8 @@ The generator uses YAML configuration files to specify input, output, and stylin
 - **Tokyo Night** (`assets/themes/tokyo-night.yaml`) - Minimal dark blue theme
 - **One Dark** (`assets/themes/one-dark.yaml`) - Popular Atom theme with lint messages
 - **Monokai** (`assets/themes/monokai.yaml`) - Classic high-contrast theme
+- **Cyberpunk** (`assets/themes/cyberpunk.yaml`) - Futuristic neon theme with vibrant colors
+- **Sunset** (`assets/themes/sunset.yaml`) - Warm gradient theme with orange and purple tones
 
 ```yaml
 # Code Snapshot Configuration
@@ -139,7 +147,7 @@ The generator creates beautiful PNG images with:
 
 ### Theme Showcase
 
-Here are some popular themes you can use out of the box, each showcasing different configuration options:
+Here are all the available themes you can use out of the box, each showcasing different configuration options:
 
 #### Dracula Theme
 
@@ -204,6 +212,26 @@ Here are some popular themes you can use out of the box, each showcasing differe
 
 ![Monokai Theme](./assets/monokai-snapshot.png)
 
+#### Cyberpunk Theme
+
+- Vibrant neon gradient background
+- Layered card with blur effects
+- Line numbers enabled
+- Outlined window controls
+- High contrast colors
+
+![Cyberpunk Theme](./assets/cyberpunk-snapshot.png)
+
+#### Sunset Theme
+
+- Warm orange to purple gradient
+- Solid card background
+- Line numbers enabled
+- Filled window controls
+- Cozy color palette
+
+![Sunset Theme](./assets/sunset-snapshot.png)
+
 ### Default Color Scheme
 
 - Keywords: Purple
@@ -230,7 +258,9 @@ Here are some popular themes you can use out of the box, each showcasing differe
 │   │   ├── nord.yaml
 │   │   ├── tokyo-night.yaml
 │   │   ├── one-dark.yaml
-│   │   └── monokai.yaml
+│   │   ├── monokai.yaml
+│   │   ├── cyberpunk.yaml
+│   │   └── sunset.yaml
 │   └── *.png                 # Generated example images
 ├── example.dart              # Example Dart file for testing
 ├── config.yaml               # Configuration file

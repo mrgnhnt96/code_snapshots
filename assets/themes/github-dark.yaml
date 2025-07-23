@@ -1,4 +1,3 @@
-# GitHub Dark Theme Configuration
 input:
   file: "./example.dart"
   startLine: 37
@@ -6,33 +5,28 @@ input:
 
 output:
   path: "./assets/github-dark-snapshot.png"
-  width: null
-  height: null
+  width: 800
+  height: 600
 
 styling:
   cardBackground:
-    type: "filled"
-    transparency: 1.0
-    color: "#21262d"
+    type: "layered"
+    transparency: 0.95
+    partialTransparency: 0.2
+    showBlur: true
+    color: "#0d1117"
+    partialBackgroundColor: "#161b22"
   background:
-    type: "gradient"
-    colors:
-      - color: "#0d1117"
-        stop: 0.0
-      - color: "#161b22"
-        stop: 1.0
-    direction: to-bottom-right
-  showLineNumbers: false
-  lineNumberStart: 1
-  showLintMessages: false
-  fileName: "app.dart"
-  fileIcon: null
-  windowControl: "hidden"
+    type: "filled"
+    color: "#0d1117"
+  showLineNumbers: true
+  lineNumberStart: 37
+  fileName: "example.dart"
+  windowControl: "outlined"
   cardMargin:
-    horizontal: 60
-    vertical: 60
+    horizontal: 50
+    vertical: 50
   borderRadius: 8
-  imageBorderRadius: 12
   tokenColors:
     keyword: "#ff7b72"
     function: "#d2a8ff"
@@ -41,6 +35,8 @@ styling:
     number: "#79c0ff"
     comment: "#8b949e"
     class-name: "#ffa657"
-    variable: "#f0f6fc"
+    variable: "#ffa198"
     operator: "#ff7b72"
     punctuation: "#f0f6fc"
+    plain-text: "#ffa198"
+    expression: "#ffa198"

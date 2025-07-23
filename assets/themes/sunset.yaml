@@ -1,0 +1,48 @@
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./assets/sunset-snapshot.png"
+  width: 800
+  height: 600
+
+styling:
+  cardBackground:
+    type: "filled"
+    transparency: 0.9
+    color: "#2d1b69"
+  background:
+    type: "gradient"
+    colors:
+      - color: "#ff6b6b"
+        stop: 0.0
+      - color: "#feca57"
+        stop: 0.3
+      - color: "#ff9ff3"
+        stop: 0.6
+      - color: "#2d1b69"
+        stop: 1.0
+    direction: "to-bottom"
+  showLineNumbers: true
+  lineNumberStart: 37
+  fileName: "example.dart"
+  windowControl: "outlined"
+  cardMargin:
+    horizontal: 45
+    vertical: 45
+  borderRadius: 18
+  tokenColors:
+    keyword: "#ff9ff3"
+    function: "#feca57"
+    method: "#feca57"
+    string: "#ff6b6b"
+    number: "#48dbfb"
+    comment: "#c8d6e5"
+    class-name: "#ff9ff3"
+    variable: "#feca57"
+    operator: "#ffffff"
+    punctuation: "#ffffff"
+    plain-text: "#feca57"
+    expression: "#feca57"

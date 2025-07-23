@@ -460,6 +460,27 @@
               "pattern": "^#[0-9A-Fa-f]{6}$",
               "default": "#ffffff",
               "examples": ["#ffffff", "#f3f4f6", "#e5e7eb"]
+            },
+            "plain-text": {
+              "type": "string",
+              "description": "Color for plain text (variables, parameters, etc.) (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#ffffff",
+              "examples": ["#ffffff", "#374151", "#1f2937"]
+            },
+            "expression": {
+              "type": "string",
+              "description": "Color for expressions (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#374151",
+              "examples": ["#374151", "#1f2937", "#6b7280"]
+            },
+            "string-literal": {
+              "type": "string",
+              "description": "Color for string literals (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#dc2626",
+              "examples": ["#dc2626", "#ef4444", "#b91c1c"]
             }
           },
           "additionalProperties": false

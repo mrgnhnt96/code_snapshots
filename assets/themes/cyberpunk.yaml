@@ -1,0 +1,51 @@
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./assets/cyberpunk-snapshot.png"
+  width: 800
+  height: 600
+
+styling:
+  cardBackground:
+    type: "layered"
+    transparency: 0.85
+    partialTransparency: 0.4
+    showBlur: true
+    color: "#00ff41"
+    partialBackgroundColor: "#000000"
+  background:
+    type: "gradient"
+    colors:
+      - color: "#000000"
+        stop: 0.0
+      - color: "#1a1a1a"
+        stop: 0.3
+      - color: "#00ff41"
+        stop: 0.7
+      - color: "#000000"
+        stop: 1.0
+    direction: "to-bottom-right"
+  showLineNumbers: true
+  lineNumberStart: 37
+  fileName: "example.dart"
+  windowControl: "filled"
+  cardMargin:
+    horizontal: 40
+    vertical: 40
+  borderRadius: 0
+  tokenColors:
+    keyword: "#ff0080"
+    function: "#00ffff"
+    method: "#00ffff"
+    string: "#ffff00"
+    number: "#ff8000"
+    comment: "#808080"
+    class-name: "#00ff00"
+    variable: "#ff00ff"
+    operator: "#ffffff"
+    punctuation: "#ffffff"
+    plain-text: "#ff00ff"
+    expression: "#ff00ff"

@@ -631,8 +631,14 @@ export class CodeSnapshotGenerator {
                 return '#ffffff'; // White
             case 'punctuation':
                 return '#ffffff'; // White
+            case 'plain-text':
+                return '#374151'; // Dark gray for better visibility
+            case 'expression':
+                return '#374151'; // Dark gray for expressions
+            case 'string-literal':
+                return '#dc2626'; // Red for string literals
             default:
-                return '#ffffff'; // White
+                return '#ff0000'; // Red to highlight missing token types
         }
     }
 

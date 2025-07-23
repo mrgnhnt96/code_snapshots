@@ -1,47 +1,36 @@
-# Dracula Theme Configuration
 input:
   file: "./example.dart"
   startLine: 37
   endLine: 46
-  lints:
-    - start: { line: 38, char: 3 }
-      end: { line: 38, char: 7 }
-      type: error
-      message: "Unused variable"
-    - start: { line: 40, char: 1 }
-      end: { line: 40, char: 8 }
-      type: warning
-      message: "Missing await"
 
 output:
   path: "./assets/dracula-snapshot.png"
-  width: null
-  height: null
+  width: 800
+  height: 600
 
 styling:
   cardBackground:
     type: "filled"
-    transparency: 1.0
-    color: "#44475a"
+    transparency: 0.9
+    color: "#282a36"
   background:
     type: "gradient"
     colors:
-      - color: "#282a36"
+      - color: "#6272a4"
         stop: 0.0
       - color: "#44475a"
+        stop: 0.5
+      - color: "#282a36"
         stop: 1.0
-    direction: to-bottom-right
+    direction: "to-bottom"
   showLineNumbers: true
-  lineNumberStart: 1
-  showLintMessages: true
-  fileName: "main.dart"
-  fileIcon: null
+  lineNumberStart: 37
+  fileName: "example.dart"
   windowControl: "filled"
   cardMargin:
-    horizontal: 80
-    vertical: 80
-  borderRadius: 16
-  imageBorderRadius: 25
+    horizontal: 40
+    vertical: 40
+  borderRadius: 12
   tokenColors:
     keyword: "#ff79c6"
     function: "#50fa7b"
@@ -53,3 +42,5 @@ styling:
     variable: "#f8f8f2"
     operator: "#ff79c6"
     punctuation: "#f8f8f2"
+    plain-text: "#f8f8f2"
+    expression: "#f8f8f2"
