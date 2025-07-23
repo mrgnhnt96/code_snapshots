@@ -11,8 +11,7 @@ export class CodeSnapshotGenerator {
     private readonly cardPadding = 20;
     private readonly lineHeight = 24;
     private readonly fontSize = 14;
-    private readonly windowControlSize = 8;
-    private readonly outlinedControlSize = 6;
+    private readonly windowControlSize = 6;
     private readonly windowControlSpacing = 12;
 
     constructor(config: SnapshotConfig) {
@@ -321,7 +320,7 @@ export class CodeSnapshotGenerator {
         const controlY = cardY + 15;
         const startX = cardX + 20;
         const isOutlined = this.config.styling.windowControl === 'outlined';
-        const controlSize = isOutlined ? this.outlinedControlSize : this.windowControlSize;
+        const controlSize = this.windowControlSize;
 
         // Close button (red)
         if (isOutlined) {
