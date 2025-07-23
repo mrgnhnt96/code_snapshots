@@ -16,4 +16,4 @@ styling:
   gradientMiddleColor: "#3b82f6"
   showLineNumbers: true
   showFileName: true
-  windowControlStyle: "filled"
+  windowControlStyle: outlined

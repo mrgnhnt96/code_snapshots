@@ -12,6 +12,7 @@ export class CodeSnapshotGenerator {
     private readonly lineHeight = 24;
     private readonly fontSize = 14;
     private readonly windowControlSize = 8;
+    private readonly outlinedControlSize = 6;
     private readonly windowControlSpacing = 12;
 
     constructor(config: SnapshotConfig) {
@@ -320,18 +321,19 @@ export class CodeSnapshotGenerator {
         const controlY = cardY + 15;
         const startX = cardX + 20;
         const isOutlined = this.config.styling.windowControlStyle === 'outlined';
+        const controlSize = isOutlined ? this.outlinedControlSize : this.windowControlSize;
 
         // Close button (red)
         if (isOutlined) {
             ctx.strokeStyle = '#ff5f57';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(startX, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.arc(startX, controlY, controlSize, 0, 2 * Math.PI);
             ctx.stroke();
         } else {
             ctx.fillStyle = '#ff5f57';
             ctx.beginPath();
-            ctx.arc(startX, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.arc(startX, controlY, controlSize, 0, 2 * Math.PI);
             ctx.fill();
         }
 
@@ -340,12 +342,12 @@ export class CodeSnapshotGenerator {
             ctx.strokeStyle = '#ffbd2e';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(startX + this.windowControlSize + this.windowControlSpacing, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.arc(startX + controlSize + this.windowControlSpacing, controlY, controlSize, 0, 2 * Math.PI);
             ctx.stroke();
         } else {
             ctx.fillStyle = '#ffbd2e';
             ctx.beginPath();
-            ctx.arc(startX + this.windowControlSize + this.windowControlSpacing, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.arc(startX + controlSize + this.windowControlSpacing, controlY, controlSize, 0, 2 * Math.PI);
             ctx.fill();
         }
 
@@ -354,12 +356,12 @@ export class CodeSnapshotGenerator {
             ctx.strokeStyle = '#28ca42';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(startX + 2 * (this.windowControlSize + this.windowControlSpacing), controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.arc(startX + 2 * (controlSize + this.windowControlSpacing), controlY, controlSize, 0, 2 * Math.PI);
             ctx.stroke();
         } else {
             ctx.fillStyle = '#28ca42';
             ctx.beginPath();
-            ctx.arc(startX + 2 * (this.windowControlSize + this.windowControlSpacing), controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.arc(startX + 2 * (controlSize + this.windowControlSpacing), controlY, controlSize, 0, 2 * Math.PI);
             ctx.fill();
         }
     }
