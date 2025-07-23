@@ -210,7 +210,7 @@ export class CodeSnapshotGenerator {
                     ctx.fillText(token.content, currentX, y);
                     currentX += ctx.measureText(token.content).width;
                 } else if (Array.isArray(token.content)) {
-                    // Handle nested token arrays
+                    // Handle nested token arrays - render each token individually
                     for (const nestedToken of token.content) {
                         if (typeof nestedToken === 'string') {
                             ctx.fillText(nestedToken, currentX, y);
@@ -218,9 +218,49 @@ export class CodeSnapshotGenerator {
                         } else if (nestedToken.type) {
                             const nestedColor = this.getTokenColor(nestedToken.type);
                             ctx.fillStyle = nestedColor;
-                            const content = this.extractTokenContent(nestedToken);
-                            ctx.fillText(content, currentX, y);
-                            currentX += ctx.measureText(content).width;
+
+                            if (typeof nestedToken.content === 'string') {
+                                ctx.fillText(nestedToken.content, currentX, y);
+                                currentX += ctx.measureText(nestedToken.content).width;
+                            } else if (Array.isArray(nestedToken.content)) {
+                                // Handle deeply nested arrays (like interpolation expressions)
+                                for (const deepToken of nestedToken.content) {
+                                    if (typeof deepToken === 'string') {
+                                        ctx.fillText(deepToken, currentX, y);
+                                        currentX += ctx.measureText(deepToken).width;
+                                    } else if (deepToken.type) {
+                                        const deepColor = this.getTokenColor(deepToken.type);
+                                        ctx.fillStyle = deepColor;
+
+                                        if (typeof deepToken.content === 'string') {
+                                            ctx.fillText(deepToken.content, currentX, y);
+                                            currentX += ctx.measureText(deepToken.content).width;
+                                        } else if (Array.isArray(deepToken.content)) {
+                                            // Handle the deepest level (like expression arrays)
+                                            for (const deepestToken of deepToken.content) {
+                                                if (typeof deepestToken === 'string') {
+                                                    ctx.fillText(deepestToken, currentX, y);
+                                                    currentX += ctx.measureText(deepestToken).width;
+                                                } else if (deepestToken.type) {
+                                                    const deepestColor = this.getTokenColor(deepestToken.type);
+                                                    ctx.fillStyle = deepestColor;
+                                                    const content = this.extractTokenContent(deepestToken);
+                                                    ctx.fillText(content, currentX, y);
+                                                    currentX += ctx.measureText(content).width;
+                                                }
+                                            }
+                                        } else {
+                                            const content = this.extractTokenContent(deepToken);
+                                            ctx.fillText(content, currentX, y);
+                                            currentX += ctx.measureText(content).width;
+                                        }
+                                    }
+                                }
+                            } else {
+                                const content = this.extractTokenContent(nestedToken);
+                                ctx.fillText(content, currentX, y);
+                                currentX += ctx.measureText(content).width;
+                            }
                         }
                     }
                 } else {
@@ -239,10 +279,15 @@ export class CodeSnapshotGenerator {
         } else if (Array.isArray(token.content)) {
             return token.content.map((item: any) => this.extractTokenContent(item)).join('');
         } else if (token.content && typeof token.content === 'object') {
+            // For complex nested objects, recursively extract content
             return this.extractTokenContent(token.content);
         } else {
             return String(token.content || '');
         }
+    }
+
+    private extractTokenContentFromArray(tokens: any[]): string {
+        return tokens.map((token: any) => this.extractTokenContent(token)).join('');
     }
 
     private getTokenColor(type: string): string {
