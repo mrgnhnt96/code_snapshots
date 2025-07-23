@@ -74,7 +74,8 @@ styling:
   backgroundColor: "#1e3a8a" # Dark blue for gradient
   gradientMiddleColor: "#3b82f6" # Medium blue for gradient middle
   showLineNumbers: true # Show line numbers
-  showFileName: true # Show file name (future feature)
+  fileName: "index.dart" # File name to display in header (null/undefined to hide)
+  fileIcon: null # Path to custom icon file (e.g., "./assets/dart-icon.png")
   windowControl: "filled" # "filled", "outlined", or "hidden"
   cardMargin:
     horizontal: 40 # Horizontal margin around the card
@@ -133,7 +134,8 @@ You can customize the appearance by modifying the `config.yaml` file:
 - **Card transparency**: `styling.cardTransparency` (0.0-1.0)
 - **Window controls**: `styling.windowControl` ("filled", "outlined", or "hidden")
 - **Line numbers**: `styling.showLineNumbers` (true/false)
-- **File name display**: `styling.showFileName` (true/false)
+- **File name display**: `styling.fileName` (string or null/undefined to hide)
+- **File icon**: `styling.fileIcon` (path to custom icon file or null/undefined for default)
 - **Background colors**: `styling.backgroundColor` and `styling.gradientMiddleColor`
 - **Card margin**: `styling.cardMargin.horizontal` and `styling.cardMargin.vertical`
 - **Code selection**: `input.startLine` and `input.endLine`

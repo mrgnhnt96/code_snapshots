@@ -161,11 +161,15 @@
           "default": true,
           "examples": [true, false]
         },
-        "showFileName": {
-          "type": "boolean",
-          "description": "Show file name in the snapshot (future feature)",
-          "default": true,
-          "examples": [true, false]
+        "fileName": {
+          "type": ["string", "null"],
+          "description": "File name to display in the header. Set to null or omit to hide the file name",
+          "examples": ["index.dart", "main.dart", null]
+        },
+        "fileIcon": {
+          "type": ["string", "null"],
+          "description": "Path to custom icon file to display next to the file name. Set to null or omit to use default icon",
+          "examples": ["./assets/dart-icon.png", null]
         },
         "windowControl": {
           "type": "string",
@@ -236,7 +240,7 @@
         "backgroundColor": "#1e3a8a",
         "gradientMiddleColor": "#3b82f6",
         "showLineNumbers": true,
-        "showFileName": true,
+        "fileName": "index.dart",
         "windowControl": "filled"
       }
     }

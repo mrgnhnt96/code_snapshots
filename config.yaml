@@ -15,8 +15,9 @@ styling:
     type: "filled"
     color: "#1e3a8a"
   showLineNumbers: true
-  showFileName: true
-  windowControl: "hidden"
+  fileName: "index.dart"
+  fileIcon: null # Path to custom icon file (e.g., "./assets/dart-icon.png")
+  windowControl: "outlined"
   cardMargin:
     horizontal: 40
     vertical: 40

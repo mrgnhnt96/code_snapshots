@@ -20,7 +20,8 @@ export interface SnapshotConfig {
             }>; // For 'gradient' type
         };
         showLineNumbers: boolean;
-        showFileName: boolean;
+        fileName?: string | null;
+        fileIcon?: string | null;
         windowControl: 'filled' | 'outlined' | 'hidden';
         cardMargin?: {
             horizontal?: number;

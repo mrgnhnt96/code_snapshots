@@ -1,7 +1,9 @@
-import { createCanvas, Canvas, CanvasRenderingContext2D } from 'canvas';
+import { createCanvas, Canvas, CanvasRenderingContext2D, Image } from 'canvas';
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-dart';
 import { SnapshotConfig } from './types';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class CodeSnapshotGenerator {
     private readonly config: SnapshotConfig;
@@ -63,7 +65,13 @@ export class CodeSnapshotGenerator {
         const textMetrics = this.calculateTextDimensions(tempCtx, lines);
 
         // Calculate content dimensions
-        const topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 20;
+        let topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 25;
+
+        // Add space for file header if fileName is specified
+        if (this.config.styling.fileName) {
+            topSpacing += 14; // Reduced space for file header (20px header - 6px spacing)
+        }
+
         const contentWidth = textMetrics.maxWidth + 2 * this.cardPadding;
         const contentHeight = textMetrics.totalHeight + topSpacing + this.cardPadding;
 
@@ -134,7 +142,12 @@ export class CodeSnapshotGenerator {
         const textMetrics = this.calculateTextDimensions(ctx, lines);
 
         // Calculate card dimensions with proper spacing
-        const topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 20; // Increased space for window controls
+        let topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 25; // Increased space for window controls
+
+        // Add space for file header if fileName is specified
+        if (this.config.styling.fileName) {
+            topSpacing += 14; // Reduced space for file header (20px header - 6px spacing)
+        }
 
         // Calculate content-based dimensions
         const contentWidth = textMetrics.maxWidth + 2 * this.cardPadding;
@@ -172,11 +185,16 @@ export class CodeSnapshotGenerator {
             this.drawWindowControls(ctx, cardX, cardY, cardWidth);
         }
 
-        // Reset shadow
+        // Reset shadow before drawing file header
         ctx.shadowColor = 'transparent';
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
+
+        // Draw file header if fileName is specified
+        if (this.config.styling.fileName) {
+            this.drawFileHeader(ctx, cardX, cardY, cardWidth);
+        }
 
         // Draw code with syntax highlighting
         const codeY = cardY + topSpacing;
@@ -430,17 +448,22 @@ export class CodeSnapshotGenerator {
         const isOutlined = this.config.styling.windowControl === 'outlined';
         const controlSize = this.windowControlSize;
 
+        // Center the window controls horizontally
+        const totalControlWidth = 3 * controlSize + 2 * this.windowControlSpacing;
+        const centerX = cardX + 20 + totalControlWidth / 2;
+        const adjustedStartX = centerX - totalControlWidth / 2;
+
         // Close button (red)
         if (isOutlined) {
             ctx.strokeStyle = '#ff5f57';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(startX, controlY, controlSize, 0, 2 * Math.PI);
+            ctx.arc(adjustedStartX, controlY, controlSize, 0, 2 * Math.PI);
             ctx.stroke();
         } else {
             ctx.fillStyle = '#ff5f57';
             ctx.beginPath();
-            ctx.arc(startX, controlY, controlSize, 0, 2 * Math.PI);
+            ctx.arc(adjustedStartX, controlY, controlSize, 0, 2 * Math.PI);
             ctx.fill();
         }
 
@@ -449,12 +472,12 @@ export class CodeSnapshotGenerator {
             ctx.strokeStyle = '#ffbd2e';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(startX + controlSize + this.windowControlSpacing, controlY, controlSize, 0, 2 * Math.PI);
+            ctx.arc(adjustedStartX + controlSize + this.windowControlSpacing, controlY, controlSize, 0, 2 * Math.PI);
             ctx.stroke();
         } else {
             ctx.fillStyle = '#ffbd2e';
             ctx.beginPath();
-            ctx.arc(startX + controlSize + this.windowControlSpacing, controlY, controlSize, 0, 2 * Math.PI);
+            ctx.arc(adjustedStartX + controlSize + this.windowControlSpacing, controlY, controlSize, 0, 2 * Math.PI);
             ctx.fill();
         }
 
@@ -463,13 +486,151 @@ export class CodeSnapshotGenerator {
             ctx.strokeStyle = '#28ca42';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(startX + 2 * (controlSize + this.windowControlSpacing), controlY, controlSize, 0, 2 * Math.PI);
+            ctx.arc(adjustedStartX + 2 * (controlSize + this.windowControlSpacing), controlY, controlSize, 0, 2 * Math.PI);
             ctx.stroke();
         } else {
             ctx.fillStyle = '#28ca42';
             ctx.beginPath();
-            ctx.arc(startX + 2 * (controlSize + this.windowControlSpacing), controlY, controlSize, 0, 2 * Math.PI);
+            ctx.arc(adjustedStartX + 2 * (controlSize + this.windowControlSpacing), controlY, controlSize, 0, 2 * Math.PI);
             ctx.fill();
         }
+    }
+
+    private drawFileHeader(ctx: CanvasRenderingContext2D, cardX: number, cardY: number, cardWidth: number): void {
+        const headerHeight = 40;
+        const headerY = cardY + 10;
+
+        // Calculate tab dimensions
+        const iconSize = 16;
+        const iconPadding = 8;
+        const textPadding = 12;
+        const tabPadding = 16;
+        const plusPadding = 16; // Padding between tab and plus icon
+
+        // Measure text width
+        ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        const textWidth = ctx.measureText(this.config.styling.fileName!).width;
+
+        // Check if we have a custom icon
+        const hasCustomIcon = this.config.styling.fileIcon && fs.existsSync(this.config.styling.fileIcon);
+
+        // Calculate tab width (only include icon space if we have a custom icon)
+        let tabWidth = textWidth + textPadding + tabPadding;
+        if (hasCustomIcon) {
+            tabWidth += iconSize + iconPadding;
+        }
+
+        const tabHeight = 32;
+
+        // Calculate plus icon width and spacing
+        const plusSize = 12;
+        const totalTabWidth = tabWidth + plusPadding + plusSize;
+
+        // Determine header position based on window controls
+        let headerX: number;
+        if (this.config.styling.windowControl !== 'hidden') {
+            // Window controls are showing, position tab just to the right of controls
+            const windowControlSpace = 80; // Space for window controls
+            headerX = cardX + windowControlSpace + 10; // 10px spacing after window controls
+        } else {
+            // No window controls, position header to match top padding
+            headerX = cardX + 10; // Match the top padding (10px from card edge)
+        }
+
+        // Draw tab background (more gray but still transparent)
+        const tabBackgroundColor = 'rgba(60, 60, 60, 0.4)';
+        ctx.fillStyle = tabBackgroundColor;
+        this.drawRoundedRect(ctx, headerX, headerY, tabWidth, tabHeight, 8);
+        ctx.fill();
+
+        // Draw icon only if we have a custom icon
+        let textX = headerX + tabPadding;
+        if (hasCustomIcon) {
+            this.drawCustomIcon(ctx, textX, headerY + (tabHeight - iconSize) / 2, iconSize);
+            textX += iconSize + iconPadding;
+        } else {
+            // Center the text horizontally when no icon is present
+            textX = headerX + (tabWidth - textWidth) / 2;
+        }
+
+        // Draw file name
+        ctx.fillStyle = '#ffffff';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(this.config.styling.fileName!, textX, headerY + tabHeight / 2);
+
+        // Draw plus icon with proper padding from the tab
+        const plusX = headerX + tabWidth + plusPadding;
+        this.drawPlusIcon(ctx, plusX, headerY + tabHeight / 2, plusSize);
+    }
+
+    private drawDartIcon(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
+        // Draw a simplified Dart logo (blue and light blue geometric shape)
+        // This is a simplified representation of the Dart logo
+
+        // Main blue triangle
+        ctx.fillStyle = '#00d4aa';
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + size, y);
+        ctx.lineTo(x + size * 0.5, y + size);
+        ctx.closePath();
+        ctx.fill();
+
+        // Light blue accent
+        ctx.fillStyle = '#66e6d1';
+        ctx.beginPath();
+        ctx.moveTo(x + size * 0.2, y + size * 0.2);
+        ctx.lineTo(x + size * 0.8, y + size * 0.2);
+        ctx.lineTo(x + size * 0.5, y + size * 0.8);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    private drawCustomIcon(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
+        try {
+            const img = new Image();
+            const imageBuffer = fs.readFileSync(this.config.styling.fileIcon!);
+            img.src = imageBuffer;
+
+            // Calculate aspect ratio to maintain proportions
+            const aspectRatio = img.width / img.height;
+            let drawWidth = size;
+            let drawHeight = size;
+
+            if (aspectRatio > 1) {
+                // Image is wider than tall
+                drawHeight = size / aspectRatio;
+            } else if (aspectRatio < 1) {
+                // Image is taller than wide
+                drawWidth = size * aspectRatio;
+            }
+
+            // Center the image in the allocated space
+            const offsetX = x + (size - drawWidth) / 2;
+            const offsetY = y + (size - drawHeight) / 2;
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        } catch (error) {
+            console.warn(`Failed to load custom icon: ${this.config.styling.fileIcon}. Using default icon.`);
+            this.drawDartIcon(ctx, x, y, size);
+        }
+    }
+
+    private drawPlusIcon(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+
+        // Draw horizontal line
+        ctx.beginPath();
+        ctx.moveTo(x - size * 0.5, y);
+        ctx.lineTo(x + size * 0.5, y);
+        ctx.stroke();
+
+        // Draw vertical line
+        ctx.beginPath();
+        ctx.moveTo(x, y - size * 0.5);
+        ctx.lineTo(x, y + size * 0.5);
+        ctx.stroke();
     }
 } 
