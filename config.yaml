@@ -24,6 +24,7 @@ styling:
     type: "filled"
     color: "#1e3a8a"
   showLineNumbers: true
+  lineNumberStart: 1 # Starting line number (defaults to 1)
   showLintMessages: false
   fileName: "index.dart"
   fileIcon: null # Path to custom icon file (e.g., "./assets/dart-icon.png")

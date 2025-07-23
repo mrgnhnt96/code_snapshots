@@ -300,9 +300,11 @@ export class CodeSnapshotGenerator {
         ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
         ctx.textAlign = 'right';
 
+        const startNumber = this.config.styling.lineNumberStart ?? 1;
+
         for (let i = 0; i < lineCount; i++) {
             const lineY = y + i * this.lineHeight;
-            ctx.fillText((i + 1).toString(), x, lineY);
+            ctx.fillText((startNumber + i).toString(), x, lineY);
         }
 
         ctx.textAlign = 'left';

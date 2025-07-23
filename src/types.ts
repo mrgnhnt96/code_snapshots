@@ -33,6 +33,7 @@ export interface SnapshotConfig {
             }>; // For 'gradient' type
         };
         showLineNumbers: boolean;
+        lineNumberStart?: number; // Starting line number (defaults to 1)
         showLintMessages?: boolean; // New option to control lint message display
         fileName?: string | null;
         fileIcon?: string | null;

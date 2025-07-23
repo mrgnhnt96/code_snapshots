@@ -225,6 +225,13 @@
           "default": true,
           "examples": [true, false]
         },
+        "lineNumberStart": {
+          "type": "integer",
+          "description": "Starting line number for display (defaults to 1)",
+          "minimum": 1,
+          "default": 1,
+          "examples": [1, 10, 37]
+        },
         "showLintMessages": {
           "type": "boolean",
           "description": "Show lint messages as tooltips or callouts",
