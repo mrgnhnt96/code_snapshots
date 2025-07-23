@@ -1,0 +1,48 @@
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+  lints:
+    - start: { line: 38, char: 3 }
+      end: { line: 38, char: 7 }
+      type: "warning"
+      message: "Consider using const for better performance"
+
+output:
+  path: "./assets/lint-messages-snapshot.png"
+  width: 800
+  height: 600
+
+styling:
+  cardBackground:
+    type: "layered"
+    transparency: 0.95
+    partialTransparency: 0.1
+    showBlur: true
+    color: "#2d3748"
+    partialBackgroundColor: "#1a202c"
+  background:
+    type: "filled"
+    color: "#171923"
+  showLineNumbers: true
+  lineNumberStart: 37
+  showLintMessages: true
+  fileName: "example.dart"
+  windowControl: "filled"
+  cardMargin:
+    horizontal: 40
+    vertical: 40
+  borderRadius: 12
+  tokenColors:
+    keyword: "#81e6d9"
+    function: "#90cdf4"
+    method: "#90cdf4"
+    string: "#9ae6b4"
+    number: "#fbb6ce"
+    comment: "#a0aec0"
+    class-name: "#fbd38d"
+    variable: "#e9d8fd"
+    operator: "#81e6d9"
+    punctuation: "#e2e8f0"
+    plain-text: "#e2e8f0"
+    expression: "#fbd38d"

@@ -10,7 +10,7 @@ A TypeScript project that creates beautiful code snapshots with Dart syntax high
 - 📝 Line numbers
 - 💾 Outputs high-quality PNG images
 - 🖼️ Similar styling to the reference image
-- 🌈 9 included popular themes (Dracula, GitHub Dark, Material Dark, Nord, Tokyo Night, One Dark, Monokai, Cyberpunk, Sunset)
+- 🌈 11 included popular themes (Dracula, GitHub Dark, Material Dark, Nord, Tokyo Night, One Dark, Monokai, Cyberpunk, Sunset, Lint Showcase, Lint Messages)
 - 🚀 One-command theme generation with `npm run examples`
 
 ## Installation
@@ -88,6 +88,12 @@ npm run dev ./assets/themes/cyberpunk.yaml
 
 # Sunset theme
 npm run dev ./assets/themes/sunset.yaml
+
+# Lint Showcase theme
+npm run dev ./assets/themes/lint-showcase.yaml
+
+# Lint Messages theme
+npm run dev ./assets/themes/lint-messages.yaml
 ```
 
 ## Configuration
@@ -105,6 +111,8 @@ The generator uses YAML configuration files to specify input, output, and stylin
 - **Monokai** (`assets/themes/monokai.yaml`) - Classic high-contrast theme
 - **Cyberpunk** (`assets/themes/cyberpunk.yaml`) - Futuristic neon theme with vibrant colors
 - **Sunset** (`assets/themes/sunset.yaml`) - Warm gradient theme with orange and purple tones
+- **Lint Showcase** (`assets/themes/lint-showcase.yaml`) - Dark theme with visual lint indicators on code
+- **Lint Messages** (`assets/themes/lint-messages.yaml`) - Clean theme with detailed lint messages display
 
 ```yaml
 # Code Snapshot Configuration
@@ -231,6 +239,28 @@ Here are all the available themes you can use out of the box, each showcasing di
 - Cozy color palette
 
 ![Sunset Theme](./assets/sunset-snapshot.png)
+
+#### Lint Showcase Theme
+
+- Dark blue color scheme with vibrant syntax highlighting
+- Visual lint indicators on code (warnings, errors, info)
+- Layered card background with blur effects
+- Line numbers enabled
+- Filled window controls
+- Focuses on visual lint highlighting
+
+![Lint Showcase Theme](./assets/lint-showcase-snapshot.png)
+
+#### Lint Messages Theme
+
+- Dark gray color scheme with clean typography
+- Detailed lint messages in separate card below code
+- Layered card background with transparency
+- Line numbers enabled
+- Filled window controls
+- Comprehensive lint explanations
+
+![Lint Messages Theme](./assets/lint-messages-snapshot.png)
 
 ### Default Color Scheme
 

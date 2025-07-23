@@ -1,0 +1,52 @@
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+  lints:
+    - start: { line: 38, char: 3 }
+      end: { line: 38, char: 7 }
+      type: "error"
+      message: "Maybe we should do this in a different way"
+    - start: { line: 42, char: 3 }
+      end: { line: 42, char: 7 }
+      type: "info"
+      message: "Consider extracting to method"
+
+output:
+  path: "./assets/lint-showcase-snapshot.png"
+  width: 800
+  height: 600
+
+styling:
+  cardBackground:
+    type: "layered"
+    transparency: 0.92
+    partialTransparency: 0.15
+    showBlur: true
+    color: "#1a1a2e"
+    partialBackgroundColor: "#16213e"
+  background:
+    type: "filled"
+    color: "#0f3460"
+  showLineNumbers: true
+  lineNumberStart: 37
+  showLintMessages: false
+  fileName: "example.dart"
+  windowControl: "filled"
+  cardMargin:
+    horizontal: 40
+    vertical: 40
+  borderRadius: 12
+  tokenColors:
+    keyword: "#ff6b6b"
+    function: "#4ecdc4"
+    method: "#4ecdc4"
+    string: "#45b7d1"
+    number: "#96ceb4"
+    comment: "#feca57"
+    class-name: "#ff9ff3"
+    variable: "#54a0ff"
+    operator: "#5f27cd"
+    punctuation: "#c8d6e5"
+    plain-text: "#c8d6e5"
+    expression: "#ff9ff3"
