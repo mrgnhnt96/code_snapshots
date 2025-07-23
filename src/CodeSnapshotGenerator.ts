@@ -595,6 +595,22 @@ export class CodeSnapshotGenerator {
     }
 
     private getTokenColor(type: string): string {
+        // Check if custom token colors are configured
+        const tokenColors = this.config.styling.tokenColors;
+
+        if (tokenColors) {
+            // Check for exact type match first
+            if (tokenColors[type as keyof typeof tokenColors]) {
+                return tokenColors[type as keyof typeof tokenColors]!;
+            }
+
+            // Handle special cases where multiple types share the same color
+            if ((type === 'function' || type === 'method') && tokenColors.function) {
+                return tokenColors.function;
+            }
+        }
+
+        // Default colors if no custom configuration
         switch (type) {
             case 'keyword':
                 return '#c084fc'; // Purple

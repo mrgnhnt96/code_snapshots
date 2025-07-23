@@ -24,14 +24,14 @@ styling:
     transparency: 0.3
     partialTransparency: 0.5 # How much more transparent the overlay should be
     showBlur: false # Whether to show blur effect on the slanted edge
-    color: "#071d65" # Converted RGB (7, 189, 101) to hex
-    partialBackgroundColor: "#0f0f0f" # Dark gray color for full background
+    color: "#44475a" # Dracula selection
+    partialBackgroundColor: "#282a36" # Dracula background
   background:
     type: "gradient"
     colors:
-      - color: "#ffffff"
+      - color: "#282a36"
         stop: 0.0
-      - color: "#3b82f6"
+      - color: "#44475a"
         stop: 1.0
     direction: to-bottom-right
   showLineNumbers: true
@@ -45,3 +45,14 @@ styling:
     vertical: 80
   borderRadius: 16
   imageBorderRadius: 25
+  tokenColors:
+    keyword: "#ff79c6" # Dracula pink
+    function: "#50fa7b" # Dracula green
+    method: "#50fa7b" # Dracula green (same as function)
+    string: "#f1fa8c" # Dracula yellow
+    number: "#bd93f9" # Dracula purple
+    comment: "#6272a4" # Dracula comment
+    class-name: "#8be9fd" # Dracula cyan
+    variable: "#f8f8f2" # Dracula foreground
+    operator: "#ff79c6" # Dracula pink
+    punctuation: "#f8f8f2" # Dracula foreground

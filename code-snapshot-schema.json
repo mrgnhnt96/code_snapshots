@@ -386,6 +386,83 @@
           "maximum": 100,
           "default": 0,
           "examples": [0, 10, 20, 30, 50]
+        },
+        "tokenColors": {
+          "type": "object",
+          "description": "Custom colors for syntax highlighting tokens",
+          "properties": {
+            "keyword": {
+              "type": "string",
+              "description": "Color for keywords (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#c084fc",
+              "examples": ["#c084fc", "#8b5cf6", "#a855f7"]
+            },
+            "function": {
+              "type": "string",
+              "description": "Color for functions (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#fbbf24",
+              "examples": ["#fbbf24", "#f59e0b", "#eab308"]
+            },
+            "method": {
+              "type": "string",
+              "description": "Color for methods (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#fbbf24",
+              "examples": ["#fbbf24", "#f59e0b", "#eab308"]
+            },
+            "string": {
+              "type": "string",
+              "description": "Color for strings (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#86efac",
+              "examples": ["#86efac", "#22c55e", "#16a34a"]
+            },
+            "number": {
+              "type": "string",
+              "description": "Color for numbers (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#fb923c",
+              "examples": ["#fb923c", "#ea580c", "#dc2626"]
+            },
+            "comment": {
+              "type": "string",
+              "description": "Color for comments (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#6b7280",
+              "examples": ["#6b7280", "#9ca3af", "#6b7280"]
+            },
+            "class-name": {
+              "type": "string",
+              "description": "Color for class names (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#60a5fa",
+              "examples": ["#60a5fa", "#3b82f6", "#2563eb"]
+            },
+            "variable": {
+              "type": "string",
+              "description": "Color for variables (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#93c5fd",
+              "examples": ["#93c5fd", "#60a5fa", "#3b82f6"]
+            },
+            "operator": {
+              "type": "string",
+              "description": "Color for operators (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#ffffff",
+              "examples": ["#ffffff", "#f3f4f6", "#e5e7eb"]
+            },
+            "punctuation": {
+              "type": "string",
+              "description": "Color for punctuation (hex format)",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "default": "#ffffff",
+              "examples": ["#ffffff", "#f3f4f6", "#e5e7eb"]
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

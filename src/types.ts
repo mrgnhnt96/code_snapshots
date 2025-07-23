@@ -52,5 +52,17 @@ export interface SnapshotConfig {
         };
         borderRadius?: number;
         imageBorderRadius?: number;
+        tokenColors?: {
+            keyword?: string; // Purple by default
+            function?: string; // Yellow by default
+            method?: string; // Yellow by default
+            string?: string; // Green by default
+            number?: string; // Orange by default
+            comment?: string; // Gray by default
+            'class-name'?: string; // Blue by default
+            variable?: string; // Light blue by default
+            operator?: string; // White by default
+            punctuation?: string; // White by default
+        };
     };
 } 
