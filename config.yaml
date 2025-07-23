@@ -22,7 +22,7 @@ styling:
   cardBackground:
     type: "layered"
     transparency: 0.3
-    partialTransparency: 0.3 # How much more transparent the overlay should be
+    partialTransparency: 0.5 # How much more transparent the overlay should be
     color: "#071d65" # Converted RGB (7, 189, 101) to hex
     partialBackgroundColor: "#0f0f0f" # Dark gray color for full background
   background:
