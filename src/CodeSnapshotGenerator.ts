@@ -860,7 +860,7 @@ export class CodeSnapshotGenerator {
             // Draw lint type indicator
             const indicatorSize = 8;
             const indicatorX = contentX;
-            const indicatorY = messageY + (lineHeight - indicatorSize) / 2;
+            const indicatorY = messageY + lineHeight / 2; // Center vertically with the text
 
             // Set color based on lint type
             let indicatorColor: string;
@@ -887,12 +887,13 @@ export class CodeSnapshotGenerator {
             // Draw indicator circle
             ctx.fillStyle = indicatorColor;
             ctx.beginPath();
-            ctx.arc(indicatorX + indicatorSize / 2, indicatorY + indicatorSize / 2, indicatorSize / 2, 0, 2 * Math.PI);
+            ctx.arc(indicatorX + indicatorSize / 2, indicatorY, indicatorSize / 2, 0, 2 * Math.PI);
             ctx.fill();
 
-            // Draw message text
+            // Draw message text - align with the center of the indicator
             ctx.fillStyle = textColor;
-            ctx.fillText(lint.message!, indicatorX + indicatorSize + 8, messageY);
+            ctx.textBaseline = 'middle'; // Center text vertically
+            ctx.fillText(lint.message!, indicatorX + indicatorSize + 8, indicatorY);
         }
     }
 } 
