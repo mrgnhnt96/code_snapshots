@@ -79,6 +79,10 @@ styling:
   windowControlStyle: "filled" # "filled" or "outlined" circles
 ```
 
+### VS Code IntelliSense
+
+For better editing experience, you can add the included JSON schema to your VS Code settings. See [VSCODE_SETUP.md](./VSCODE_SETUP.md) for detailed instructions.
+
 ## Example Output
 
 The generator will create a PNG image with:

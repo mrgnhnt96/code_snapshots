@@ -1,0 +1,9 @@
+{
+    "yaml.schemas": {
+        "./code-snapshot-schema.json": [
+            "**/config.yaml",
+            "**/*-config.yaml",
+            "**/snapshot-config.yaml"
+        ]
+    }
+}

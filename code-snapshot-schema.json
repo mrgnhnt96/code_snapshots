@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Code Snapshot Configuration",
+  "description": "Configuration schema for the code snapshot generator",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "description": "Input file and line range configuration",
+      "required": ["file", "startLine", "endLine"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "description": "Path to the Dart file to generate a snapshot from",
+          "pattern": ".*\\.dart$",
+          "examples": ["./example.dart", "./src/main.dart"]
+        },
+        "startLine": {
+          "type": "integer",
+          "description": "Starting line number (inclusive, 1-based)",
+          "minimum": 1,
+          "examples": [1, 37]
+        },
+        "endLine": {
+          "type": "integer",
+          "description": "Ending line number (inclusive, 1-based)",
+          "minimum": 1,
+          "examples": [10, 46]
+        }
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "description": "Output image configuration",
+      "required": ["path", "width", "height"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Output file path for the generated PNG image",
+          "pattern": ".*\\.png$",
+          "examples": ["./code-snapshot.png", "./output/my-snapshot.png"]
+        },
+        "width": {
+          "type": "integer",
+          "description": "Image width in pixels",
+          "minimum": 200,
+          "maximum": 2000,
+          "default": 800,
+          "examples": [600, 800, 1200]
+        },
+        "height": {
+          "type": "integer",
+          "description": "Image height in pixels",
+          "minimum": 200,
+          "maximum": 2000,
+          "default": 600,
+          "examples": [400, 600, 800]
+        }
+      },
+      "additionalProperties": false
+    },
+    "styling": {
+      "type": "object",
+      "description": "Visual styling configuration",
+      "properties": {
+        "cardTransparency": {
+          "type": "number",
+          "description": "Card transparency level (0.0 = fully transparent, 1.0 = fully opaque)",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.8,
+          "examples": [0.6, 0.8, 0.9]
+        },
+        "showWindowControls": {
+          "type": "boolean",
+          "description": "Show macOS-style window control buttons",
+          "default": true,
+          "examples": [true, false]
+        },
+        "backgroundColor": {
+          "type": "string",
+          "description": "Dark blue color for gradient background (hex format)",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "default": "#1e3a8a",
+          "examples": ["#1e3a8a", "#1e40af", "#1e1b4b"]
+        },
+        "gradientMiddleColor": {
+          "type": "string",
+          "description": "Medium blue color for gradient middle (hex format)",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "default": "#3b82f6",
+          "examples": ["#3b82f6", "#60a5fa", "#6366f1"]
+        },
+        "showLineNumbers": {
+          "type": "boolean",
+          "description": "Show line numbers on the left side of the code",
+          "default": true,
+          "examples": [true, false]
+        },
+        "showFileName": {
+          "type": "boolean",
+          "description": "Show file name in the snapshot (future feature)",
+          "default": true,
+          "examples": [true, false]
+        },
+        "windowControlStyle": {
+          "type": "string",
+          "description": "Style of the window control buttons",
+          "enum": ["filled", "outlined"],
+          "default": "filled",
+          "examples": ["filled", "outlined"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["input", "output", "styling"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "input": {
+        "file": "./example.dart",
+        "startLine": 37,
+        "endLine": 46
+      },
+      "output": {
+        "path": "./code-snapshot.png",
+        "width": 800,
+        "height": 600
+      },
+      "styling": {
+        "cardTransparency": 0.8,
+        "showWindowControls": true,
+        "backgroundColor": "#1e3a8a",
+        "gradientMiddleColor": "#3b82f6",
+        "showLineNumbers": true,
+        "showFileName": true,
+        "windowControlStyle": "filled"
+      }
+    }
+  ]
+}
