@@ -21,8 +21,12 @@ output:
 styling:
   cardTransparency: 0.8
   background:
-    type: "filled"
-    color: "#1e3a8a"
+    type: "gradient"
+    colors:
+      - color: "#ffffff"
+        stop: 0.0
+      - color: "#3b82f6"
+        stop: 1.0
   showLineNumbers: true
   lineNumberStart: 1 # Starting line number (defaults to 1)
   showLintMessages: false
@@ -30,7 +34,7 @@ styling:
   fileIcon: null # Path to custom icon file (e.g., "./assets/dart-icon.png")
   windowControl: "outlined"
   cardMargin:
-    horizontal: 40
-    vertical: 40
-  borderRadius: 25
-  imageBorderRadius: 40
+    horizontal: 80
+    vertical: 80
+  borderRadius: 16
+  imageBorderRadius: 25
