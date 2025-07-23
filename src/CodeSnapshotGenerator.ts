@@ -36,8 +36,8 @@ export class CodeSnapshotGenerator {
             this.applyImageBorderRadius(ctx, imageBorderRadius);
         }
 
-        // Draw gradient background
-        this.drawGradientBackground(ctx);
+        // Draw background
+        this.drawBackground(ctx);
 
         // Draw semi-transparent card
         this.drawCodeCard(ctx, code);
@@ -92,14 +92,38 @@ export class CodeSnapshotGenerator {
         return { canvasWidth, canvasHeight };
     }
 
-    private drawGradientBackground(ctx: CanvasRenderingContext2D): void {
-        const gradient = ctx.createLinearGradient(0, 0, 0, this.height);
-        gradient.addColorStop(0, this.config.styling.backgroundColor);
-        gradient.addColorStop(0.5, this.config.styling.gradientMiddleColor);
-        gradient.addColorStop(1, this.config.styling.backgroundColor);
+    private drawBackground(ctx: CanvasRenderingContext2D): void {
+        const background = this.config.styling.background;
 
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, this.width, this.height);
+        switch (background.type) {
+            case 'transparent':
+                // Do nothing - leave canvas transparent
+                return;
+
+            case 'filled':
+                if (background.color) {
+                    ctx.fillStyle = background.color;
+                    ctx.fillRect(0, 0, this.width, this.height);
+                }
+                break;
+
+            case 'gradient':
+                if (background.colors && background.colors.length > 0) {
+                    const gradient = ctx.createLinearGradient(0, 0, 0, this.height);
+
+                    // Sort colors by stop position
+                    const sortedColors = [...background.colors].sort((a, b) => a.stop - b.stop);
+
+                    // Add color stops
+                    for (const colorStop of sortedColors) {
+                        gradient.addColorStop(colorStop.stop, colorStop.color);
+                    }
+
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, this.width, this.height);
+                }
+                break;
+        }
     }
 
     private drawCodeCard(ctx: CanvasRenderingContext2D, code: string): void {

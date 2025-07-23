@@ -72,20 +72,88 @@
           "default": 0.8,
           "examples": [0.6, 0.8, 0.9]
         },
-
-        "backgroundColor": {
-          "type": "string",
-          "description": "Dark blue color for gradient background (hex format)",
-          "pattern": "^#[0-9A-Fa-f]{6}$",
-          "default": "#1e3a8a",
-          "examples": ["#1e3a8a", "#1e40af", "#1e1b4b"]
-        },
-        "gradientMiddleColor": {
-          "type": "string",
-          "description": "Medium blue color for gradient middle (hex format)",
-          "pattern": "^#[0-9A-Fa-f]{6}$",
-          "default": "#3b82f6",
-          "examples": ["#3b82f6", "#60a5fa", "#6366f1"]
+        "background": {
+          "type": "object",
+          "description": "Background configuration for the image",
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Filled background with solid color",
+              "required": ["type", "color"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["filled"],
+                  "description": "Background type - filled"
+                },
+                "color": {
+                  "type": "string",
+                  "description": "Background color (hex format)",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "examples": ["#1e3a8a", "#000000", "#ffffff"]
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "description": "Transparent background",
+              "required": ["type"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["transparent"],
+                  "description": "Background type - transparent"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "description": "Gradient background with color stops",
+              "required": ["type", "colors"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["gradient"],
+                  "description": "Background type - gradient"
+                },
+                "colors": {
+                  "type": "array",
+                  "description": "Array of color stops for gradient",
+                  "items": {
+                    "type": "object",
+                    "required": ["color", "stop"],
+                    "properties": {
+                      "color": {
+                        "type": "string",
+                        "description": "Color value (hex format)",
+                        "pattern": "^#[0-9A-Fa-f]{6}$",
+                        "examples": ["#1e3a8a", "#3b82f6", "#ffffff"]
+                      },
+                      "stop": {
+                        "type": "number",
+                        "description": "Stop position (0.0 to 1.0)",
+                        "minimum": 0.0,
+                        "maximum": 1.0,
+                        "examples": [0.0, 0.5, 1.0]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "examples": [
+                    [
+                      { "color": "#1e3a8a", "stop": 0.0 },
+                      { "color": "#3b82f6", "stop": 0.5 },
+                      { "color": "#1e3a8a", "stop": 1.0 }
+                    ]
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
         },
         "showLineNumbers": {
           "type": "boolean",

@@ -11,8 +11,9 @@ output:
 
 styling:
   cardTransparency: 0.8
-  backgroundColor: "#1e3a8a"
-  gradientMiddleColor: "#3b82f6"
+  background:
+    type: "filled"
+    color: "#1e3a8a"
   showLineNumbers: true
   showFileName: true
   windowControl: "hidden"

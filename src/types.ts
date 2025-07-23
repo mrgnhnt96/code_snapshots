@@ -11,8 +11,14 @@ export interface SnapshotConfig {
     };
     styling: {
         cardTransparency: number;
-        backgroundColor: string;
-        gradientMiddleColor: string;
+        background: {
+            type: 'filled' | 'transparent' | 'gradient';
+            color?: string; // For 'filled' type
+            colors?: Array<{
+                color: string;
+                stop: number; // 0.0 to 1.0
+            }>; // For 'gradient' type
+        };
         showLineNumbers: boolean;
         showFileName: boolean;
         windowControl: 'filled' | 'outlined' | 'hidden';
