@@ -27,6 +27,7 @@ export interface SnapshotConfig {
             type: 'solid' | 'layered';
             transparency: number; // Card transparency level (0.0 = fully transparent, 1.0 = fully opaque)
             partialTransparency?: number; // For 'layered' type - transparency level for the overlay color (0.0-1.0)
+            showBlur?: boolean; // For 'layered' type - whether to show blur effect on the slanted edge
             color?: string; // For 'solid' type or 'layered' type - main overlay color
             partialBackgroundColor?: string; // For 'layered' type - full background color
         };

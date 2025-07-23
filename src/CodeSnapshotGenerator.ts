@@ -253,19 +253,30 @@ export class CodeSnapshotGenerator {
             const partialTransparency = cardBackground.partialTransparency ?? 0.3; // Default to 0.3 if not specified
             const mainTransparency = partialTransparency; // Use partialTransparency directly as the overlay transparency
 
-            // Create gradient mask for blur effect - follow the slant
-            const gradientWidth = 20; // Width of the blur transition
-            const gradient = ctx.createLinearGradient(
-                cardX + cardWidth / 2 - gradientWidth, cardY,
-                cardX + cardWidth / 2 + slantOffset, cardY + cardHeight
-            );
-            gradient.addColorStop(0, this.hexToRgba(cardBackground.color, mainTransparency));
-            gradient.addColorStop(0.7, this.hexToRgba(cardBackground.color, mainTransparency * 0.5)); // Keep some opacity for text contrast
-            gradient.addColorStop(1, this.hexToRgba(cardBackground.color, 0));
+            // Check if blur should be shown
+            const showBlur = cardBackground.showBlur ?? true; // Default to true if not specified
 
-            ctx.fillStyle = gradient;
-            this.drawSplitLeftRect(ctx, cardX, cardY, cardWidth / 2, cardHeight, borderRadius);
-            ctx.fill();
+            if (showBlur) {
+                // Create gradient mask for blur effect - follow the slant
+                const gradientWidth = 20; // Width of the blur transition
+                const gradient = ctx.createLinearGradient(
+                    cardX + cardWidth / 2 - gradientWidth, cardY,
+                    cardX + cardWidth / 2 + slantOffset, cardY + cardHeight
+                );
+                gradient.addColorStop(0, this.hexToRgba(cardBackground.color, mainTransparency));
+                gradient.addColorStop(0.7, this.hexToRgba(cardBackground.color, mainTransparency * 0.5)); // Keep some opacity for text contrast
+                gradient.addColorStop(1, this.hexToRgba(cardBackground.color, 0));
+
+                ctx.fillStyle = gradient;
+                this.drawSplitLeftRect(ctx, cardX, cardY, cardWidth / 2, cardHeight, borderRadius);
+                ctx.fill();
+            } else {
+                // Draw solid overlay without blur
+                const mainRgba = this.hexToRgba(cardBackground.color, mainTransparency);
+                ctx.fillStyle = mainRgba;
+                this.drawSplitLeftRect(ctx, cardX, cardY, cardWidth / 2, cardHeight, borderRadius);
+                ctx.fill();
+            }
         } else {
             // Draw solid background (default or explicit solid)
             const color = cardBackground?.color || '#1e1e1e';

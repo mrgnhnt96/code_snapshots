@@ -190,6 +190,12 @@
                   "default": 0.3,
                   "examples": [0.2, 0.3, 0.5]
                 },
+                "showBlur": {
+                  "type": "boolean",
+                  "description": "Whether to show blur effect on the slanted edge",
+                  "default": true,
+                  "examples": [true, false]
+                },
                 "color": {
                   "type": "string",
                   "description": "Main overlay color (hex format)",
