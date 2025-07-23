@@ -222,18 +222,48 @@ export class CodeSnapshotGenerator {
         // Check for overflow and log warnings
         this.checkOverflow(textMetrics, cardWidth, cardHeight, topSpacing);
 
-        // Draw semi-transparent card background
-        const transparency = this.config.styling.cardTransparency;
-        ctx.fillStyle = `rgba(30, 30, 30, ${transparency})`;
+        // Draw card background
+        const cardBackground = this.config.styling.cardBackground;
+        const transparency = cardBackground?.transparency ?? 0.8; // Default to 0.8 if not specified
+        const borderRadius = this.config.styling.borderRadius ?? 15; // Default to 15 if not specified
+
         ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
         ctx.shadowBlur = 20;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 10;
 
-        // Rounded rectangle
-        const borderRadius = this.config.styling.borderRadius ?? 15; // Default to 15 if not specified
-        this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, borderRadius);
-        ctx.fill();
+        if (cardBackground?.type === 'layered' && cardBackground.color && cardBackground.partialBackgroundColor) {
+            // Draw layered background - partial background color spans full width, main color overlays with slant
+            const midX = cardX + cardWidth / 2;
+            const slantOffset = cardHeight * 0.15; // Match the slant from the drawing methods
+
+            // Draw full-width partial background first (underneath)
+            const partialRgba = this.hexToRgba(cardBackground.partialBackgroundColor, transparency);
+            ctx.fillStyle = partialRgba;
+            this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, borderRadius);
+            ctx.fill();
+
+            // Reset shadow before drawing overlay
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // Draw main color on top with slant - configurable transparency
+            const partialTransparency = cardBackground.partialTransparency ?? 0.3; // Default to 0.3 if not specified
+            const mainTransparency = partialTransparency; // Use partialTransparency directly as the overlay transparency
+            const mainRgba = this.hexToRgba(cardBackground.color, mainTransparency);
+            ctx.fillStyle = mainRgba;
+            this.drawSplitLeftRect(ctx, cardX, cardY, cardWidth / 2, cardHeight, borderRadius);
+            ctx.fill();
+        } else {
+            // Draw solid background (default or explicit solid)
+            const color = cardBackground?.color || '#1e1e1e';
+            const rgba = this.hexToRgba(color, transparency);
+            ctx.fillStyle = rgba;
+            this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, borderRadius);
+            ctx.fill();
+        }
 
         // Draw borders
         // Black border (0.8px) - on the outermost edge
@@ -312,6 +342,48 @@ export class CodeSnapshotGenerator {
         ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+    }
+
+    private hexToRgba(hex: string, alpha: number): string {
+        // Remove # if present
+        hex = hex.replace('#', '');
+
+        // Parse hex values
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    private drawSplitLeftRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
+        // Add a slight leftward slant (15 degrees)
+        const slantOffset = height * 0.15; // 15% of height for slant
+
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width + slantOffset, y);
+        ctx.lineTo(x + width, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+    }
+
+    private drawSplitRightRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
+        // Add a slight leftward slant (15 degrees)
+        const slantOffset = height * 0.15; // 15% of height for slant
+
+        ctx.beginPath();
+        ctx.moveTo(x - slantOffset, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x, y + height);
+        ctx.lineTo(x - slantOffset, y);
         ctx.closePath();
     }
 
@@ -873,7 +945,8 @@ export class CodeSnapshotGenerator {
         const lintCardHeight = contentHeight + 2 * this.cardPadding;
 
         // Draw lint messages card background
-        const transparency = this.config.styling.cardTransparency;
+        const cardBackground = this.config.styling.cardBackground;
+        const transparency = cardBackground?.transparency ?? 0.8; // Default to 0.8 if not specified
         ctx.fillStyle = `rgba(30, 30, 30, ${transparency})`;
         ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
         ctx.shadowBlur = 20;

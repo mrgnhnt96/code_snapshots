@@ -19,7 +19,12 @@ output:
   height: null
 
 styling:
-  cardTransparency: 0.8
+  cardBackground:
+    type: "layered"
+    transparency: 0.3
+    partialTransparency: 0.3 # How much more transparent the overlay should be
+    color: "#22c55e" # Green color for main overlay
+    partialBackgroundColor: "#d3d3d3" # Light gray color for full background
   background:
     type: "gradient"
     colors:

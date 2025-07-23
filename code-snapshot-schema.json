@@ -128,13 +128,84 @@
       "type": "object",
       "description": "Visual styling configuration",
       "properties": {
-        "cardTransparency": {
-          "type": "number",
-          "description": "Card transparency level (0.0 = fully transparent, 1.0 = fully opaque)",
-          "minimum": 0.0,
-          "maximum": 1.0,
-          "default": 0.8,
-          "examples": [0.6, 0.8, 0.9]
+        "cardBackground": {
+          "type": "object",
+          "description": "Card background configuration",
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Solid color background",
+              "required": ["type", "transparency", "color"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["solid"],
+                  "description": "Background type - solid"
+                },
+                "transparency": {
+                  "type": "number",
+                  "description": "Card transparency level (0.0 = fully transparent, 1.0 = fully opaque)",
+                  "minimum": 0.0,
+                  "maximum": 1.0,
+                  "default": 0.8,
+                  "examples": [0.6, 0.8, 0.9]
+                },
+                "color": {
+                  "type": "string",
+                  "description": "Background color (hex format)",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "examples": ["#1e1e1e", "#2d2d2d", "#000000"]
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "description": "Layered background with full-width base and slanted overlay",
+              "required": [
+                "type",
+                "transparency",
+                "color",
+                "partialBackgroundColor"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["layered"],
+                  "description": "Background type - layered"
+                },
+                "transparency": {
+                  "type": "number",
+                  "description": "Card transparency level (0.0 = fully transparent, 1.0 = fully opaque)",
+                  "minimum": 0.0,
+                  "maximum": 1.0,
+                  "default": 0.8,
+                  "examples": [0.6, 0.8, 0.9]
+                },
+                "partialTransparency": {
+                  "type": "number",
+                  "description": "Transparency level for the overlay color (0.0 = fully transparent, 1.0 = fully opaque)",
+                  "minimum": 0.0,
+                  "maximum": 1.0,
+                  "default": 0.3,
+                  "examples": [0.2, 0.3, 0.5]
+                },
+                "color": {
+                  "type": "string",
+                  "description": "Main overlay color (hex format)",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "examples": ["#22c55e", "#3b82f6", "#f59e0b"]
+                },
+                "partialBackgroundColor": {
+                  "type": "string",
+                  "description": "Full background color (hex format)",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "examples": ["#1e1e1e", "#2d2d2d", "#000000"]
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
         },
         "background": {
           "type": "object",
