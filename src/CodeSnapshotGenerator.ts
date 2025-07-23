@@ -128,7 +128,8 @@ export class CodeSnapshotGenerator {
         ctx.shadowOffsetY = 10;
 
         // Rounded rectangle
-        this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, 15);
+        const borderRadius = this.config.styling.borderRadius ?? 15; // Default to 15 if not specified
+        this.drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, borderRadius);
         ctx.fill();
 
         // Draw macOS window controls if enabled

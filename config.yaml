@@ -19,3 +19,4 @@ styling:
   cardMargin:
     horizontal: 40
     vertical: 40
+  borderRadius: 25
