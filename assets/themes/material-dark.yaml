@@ -1,0 +1,46 @@
+# Material Dark Theme Configuration
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+  lints:
+    - start: { line: 39, char: 1 }
+      end: { line: 39, char: 10 }
+      type: error
+      message: "Deprecated method"
+
+output:
+  path: "./assets/material-dark-snapshot.png"
+  width: null
+  height: null
+
+styling:
+  cardBackground:
+    type: "solid"
+    transparency: 1.0
+    color: "#424242"
+  background:
+    type: "filled"
+    color: "#121212"
+  showLineNumbers: true
+  lineNumberStart: 37
+  showLintMessages: false
+  fileName: "widget.dart"
+  fileIcon: null
+  windowControl: "outlined"
+  cardMargin:
+    horizontal: 100
+    vertical: 100
+  borderRadius: 20
+  imageBorderRadius: 30
+  tokenColors:
+    keyword: "#c792ea"
+    function: "#82aaff"
+    method: "#82aaff"
+    string: "#c3e88d"
+    number: "#f78c6c"
+    comment: "#546e7a"
+    class-name: "#ffcb8b"
+    variable: "#e1e1e1"
+    operator: "#c792ea"
+    punctuation: "#e1e1e1"

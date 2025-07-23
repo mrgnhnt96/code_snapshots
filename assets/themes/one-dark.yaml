@@ -1,0 +1,52 @@
+# One Dark Theme Configuration
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+  lints:
+    - start: { line: 41, char: 1 }
+      end: { line: 41, char: 15 }
+      type: warning
+      message: "Consider using const"
+
+output:
+  path: "./assets/one-dark-snapshot.png"
+  width: null
+  height: null
+
+styling:
+  cardBackground:
+    type: "solid"
+    color: "#282c34"
+  background:
+    type: "gradient"
+    colors:
+      - color: "#21252b"
+        stop: 0.0
+      - color: "#282c34"
+        stop: 0.7
+      - color: "#21252b"
+        stop: 1.0
+    direction: to-bottom
+  showLineNumbers: true
+  lineNumberStart: 37
+  showLintMessages: true
+  fileName: "controller.dart"
+  fileIcon: null
+  windowControl: "filled"
+  cardMargin:
+    horizontal: 90
+    vertical: 90
+  borderRadius: 14
+  imageBorderRadius: 22
+  tokenColors:
+    keyword: "#c678dd"
+    function: "#61afef"
+    method: "#61afef"
+    string: "#98c379"
+    number: "#d19a66"
+    comment: "#5c6370"
+    class-name: "#e5c07b"
+    variable: "#e06c75"
+    operator: "#c678dd"
+    punctuation: "#abb2bf"

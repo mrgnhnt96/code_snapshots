@@ -10,6 +10,8 @@ A TypeScript project that creates beautiful code snapshots with Dart syntax high
 - 📝 Line numbers
 - 💾 Outputs high-quality PNG images
 - 🖼️ Similar styling to the reference image
+- 🌈 7 included popular themes (Dracula, GitHub Dark, Material Dark, Nord, Tokyo Night, One Dark, Monokai)
+- 🚀 One-command theme generation with `npm run examples`
 
 ## Installation
 
@@ -53,9 +55,48 @@ Generate a snapshot with custom config:
 npm run dev ./my-config.yaml
 ```
 
+Generate snapshots using included themes:
+
+```bash
+# Generate all theme examples at once
+npm run examples
+
+# Or generate individual themes:
+# Dracula theme
+npm run dev ./assets/themes/dracula.yaml
+
+# GitHub Dark theme
+npm run dev ./assets/themes/github-dark.yaml
+
+# Material Dark theme
+npm run dev ./assets/themes/material-dark.yaml
+
+# Nord theme
+npm run dev ./assets/themes/nord.yaml
+
+# Tokyo Night theme
+npm run dev ./assets/themes/tokyo-night.yaml
+
+# One Dark theme
+npm run dev ./assets/themes/one-dark.yaml
+
+# Monokai theme
+npm run dev ./assets/themes/monokai.yaml
+```
+
 ## Configuration
 
-The generator uses YAML configuration files to specify input, output, and styling options:
+The generator uses YAML configuration files to specify input, output, and styling options. We've included several popular themes in the `assets/themes/` directory that you can use as starting points:
+
+### Included Themes
+
+- **Dracula** (`assets/themes/dracula.yaml`) - Classic dark purple theme with lint messages
+- **GitHub Dark** (`assets/themes/github-dark.yaml`) - GitHub's dark theme with hidden controls
+- **Material Dark** (`assets/themes/material-dark.yaml`) - Material Design with blur effects
+- **Nord** (`assets/themes/nord.yaml`) - Arctic-inspired 3-color gradient
+- **Tokyo Night** (`assets/themes/tokyo-night.yaml`) - Minimal dark blue theme
+- **One Dark** (`assets/themes/one-dark.yaml`) - Popular Atom theme with lint messages
+- **Monokai** (`assets/themes/monokai.yaml`) - Classic high-contrast theme
 
 ```yaml
 # Code Snapshot Configuration
@@ -88,21 +129,91 @@ For better editing experience, you can add the included JSON schema to your VS C
 
 ## Example Output
 
-The generator will create a PNG image with:
+The generator creates beautiful PNG images with:
 
-- Blue gradient background (dark blue at top/bottom, lighter in middle)
-- Semi-transparent dark card with rounded corners and macOS-style window controls
-- Syntax-highlighted Dart code with optional line numbers
+- Gradient backgrounds with customizable colors
+- Semi-transparent cards with rounded corners and macOS-style window controls
+- Syntax-highlighted code with optional line numbers
 - Overflow detection with console warnings for text that extends past card boundaries
-- Color scheme:
-  - Keywords: Purple
-  - Functions/Methods: Yellow
-  - Strings: Green
-  - Numbers: Orange
-  - Comments: Gray
-  - Class names: Blue
-  - Variables: Light blue
-  - Operators/Punctuation: White
+- Customizable color schemes for different programming languages
+
+### Theme Showcase
+
+Here are some popular themes you can use out of the box, each showcasing different configuration options:
+
+#### Dracula Theme
+
+- Layered card background with gradient
+- Line numbers enabled
+- Lint messages shown
+- Filled window controls
+
+![Dracula Theme](./assets/dracula-snapshot.png)
+
+#### GitHub Dark Theme
+
+- Solid card with gradient background
+- No line numbers
+- Hidden window controls
+- Compact margins
+
+![GitHub Dark Theme](./assets/github-dark-snapshot.png)
+
+#### Material Dark Theme
+
+- Layered card with blur effect
+- Line numbers starting from 37
+- Outlined window controls
+- Large margins and border radius
+
+![Material Dark Theme](./assets/material-dark-snapshot.png)
+
+#### Nord Theme
+
+- Solid card with 3-color gradient
+- Line numbers enabled
+- Filled window controls
+- Medium margins
+
+![Nord Theme](./assets/nord-snapshot.png)
+
+#### Tokyo Night Theme
+
+- Solid card and background
+- No line numbers
+- Outlined window controls
+- Minimal margins and border radius
+
+![Tokyo Night Theme](./assets/tokyo-night-snapshot.png)
+
+#### One Dark Theme
+
+- Layered card with gradient background
+- Line numbers starting from 37
+- Lint messages shown
+- Filled window controls
+
+![One Dark Theme](./assets/one-dark-snapshot.png)
+
+#### Monokai Theme
+
+- Solid card and background
+- No line numbers
+- Hidden window controls
+- Minimal styling
+
+![Monokai Theme](./assets/monokai-snapshot.png)
+
+### Default Color Scheme
+
+- Keywords: Purple
+- Functions/Methods: Yellow
+- Strings: Green
+- Numbers: Orange
+- Comments: Gray
+- Class names: Blue
+- Variables: Light blue
+- Operators/Punctuation: White
 
 ## Project Structure
 
@@ -111,6 +222,16 @@ The generator will create a PNG image with:
 │   ├── index.ts              # Main entry point
 │   ├── CodeSnapshotGenerator.ts  # Core snapshot generation logic
 │   └── types.ts              # TypeScript interfaces
+├── assets/
+│   ├── themes/               # Pre-configured theme files
+│   │   ├── dracula.yaml
+│   │   ├── github-dark.yaml
+│   │   ├── material-dark.yaml
+│   │   ├── nord.yaml
+│   │   ├── tokyo-night.yaml
+│   │   ├── one-dark.yaml
+│   │   └── monokai.yaml
+│   └── *.png                 # Generated example images
 ├── example.dart              # Example Dart file for testing
 ├── config.yaml               # Configuration file
 ├── package.json              # Dependencies and scripts
@@ -128,7 +249,26 @@ The generator will create a PNG image with:
 
 ## Customization
 
-You can customize the appearance by modifying the `config.yaml` file:
+You can customize the appearance by modifying any configuration file. The included themes in `assets/themes/` serve as excellent starting points for creating your own themes.
+
+### Creating Custom Themes
+
+1. Copy one of the included theme files as a starting point:
+
+   ```bash
+   cp assets/themes/dracula.yaml my-custom-theme.yaml
+   ```
+
+2. Modify the colors and settings to match your preferences
+
+3. Generate your custom theme:
+   ```bash
+   npm run dev ./my-custom-theme.yaml
+   ```
+
+### Customization Options
+
+You can customize the appearance by modifying any configuration file:
 
 - **Image dimensions**: `output.width` and `output.height` (null/undefined = auto-size to content)
 - **Card transparency**: `styling.cardTransparency` (0.0-1.0)

@@ -1,0 +1,40 @@
+# Monokai Theme Configuration
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./assets/monokai-snapshot.png"
+  width: null
+  height: null
+
+styling:
+  cardBackground:
+    type: "solid"
+    color: "#272822"
+  background:
+    type: "solid"
+    color: "#1d1e19"
+  showLineNumbers: false
+  lineNumberStart: 1
+  showLintMessages: false
+  fileName: "helper.dart"
+  fileIcon: null
+  windowControl: "hidden"
+  cardMargin:
+    horizontal: 40
+    vertical: 40
+  borderRadius: 4
+  imageBorderRadius: 6
+  tokenColors:
+    keyword: "#f92672"
+    function: "#a6e22e"
+    method: "#a6e22e"
+    string: "#e6db74"
+    number: "#ae81ff"
+    comment: "#75715e"
+    class-name: "#66d9ef"
+    variable: "#f8f8f2"
+    operator: "#f92672"
+    punctuation: "#f8f8f2"

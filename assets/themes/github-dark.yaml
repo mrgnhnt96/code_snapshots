@@ -1,0 +1,46 @@
+# GitHub Dark Theme Configuration
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./assets/github-dark-snapshot.png"
+  width: null
+  height: null
+
+styling:
+  cardBackground:
+    type: "solid"
+    transparency: 1.0
+    color: "#21262d"
+  background:
+    type: "gradient"
+    colors:
+      - color: "#0d1117"
+        stop: 0.0
+      - color: "#161b22"
+        stop: 1.0
+    direction: to-bottom-right
+  showLineNumbers: false
+  lineNumberStart: 1
+  showLintMessages: false
+  fileName: "app.dart"
+  fileIcon: null
+  windowControl: "hidden"
+  cardMargin:
+    horizontal: 60
+    vertical: 60
+  borderRadius: 8
+  imageBorderRadius: 12
+  tokenColors:
+    keyword: "#ff7b72"
+    function: "#d2a8ff"
+    method: "#d2a8ff"
+    string: "#a5d6ff"
+    number: "#79c0ff"
+    comment: "#8b949e"
+    class-name: "#ffa657"
+    variable: "#f0f6fc"
+    operator: "#ff7b72"
+    punctuation: "#f0f6fc"

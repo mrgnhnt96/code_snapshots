@@ -1,0 +1,47 @@
+# Nord Theme Configuration
+input:
+  file: "./example.dart"
+  startLine: 37
+  endLine: 46
+
+output:
+  path: "./assets/nord-snapshot.png"
+  width: null
+  height: null
+
+styling:
+  cardBackground:
+    type: "solid"
+    color: "#3b4252"
+  background:
+    type: "gradient"
+    colors:
+      - color: "#2e3440"
+        stop: 0.0
+      - color: "#3b4252"
+        stop: 0.5
+      - color: "#434c5e"
+        stop: 1.0
+    direction: to-bottom
+  showLineNumbers: true
+  lineNumberStart: 1
+  showLintMessages: false
+  fileName: "service.dart"
+  fileIcon: null
+  windowControl: "filled"
+  cardMargin:
+    horizontal: 70
+    vertical: 70
+  borderRadius: 10
+  imageBorderRadius: 15
+  tokenColors:
+    keyword: "#81a1c1"
+    function: "#88c0d0"
+    method: "#88c0d0"
+    string: "#a3be8c"
+    number: "#b48ead"
+    comment: "#616e88"
+    class-name: "#8fbcbb"
+    variable: "#eceff4"
+    operator: "#81a1c1"
+    punctuation: "#eceff4"
