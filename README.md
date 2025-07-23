@@ -71,12 +71,11 @@ output:
 
 styling:
   cardTransparency: 0.8 # Card transparency (0.0-1.0)
-  showWindowControls: true # Show macOS-style window controls
   backgroundColor: "#1e3a8a" # Dark blue for gradient
   gradientMiddleColor: "#3b82f6" # Medium blue for gradient middle
   showLineNumbers: true # Show line numbers
   showFileName: true # Show file name (future feature)
-  windowControlStyle: "filled" # "filled" or "outlined" circles
+  windowControl: "filled" # "filled", "outlined", or "hidden"
 ```
 
 ### VS Code IntelliSense
@@ -129,8 +128,7 @@ You can customize the appearance by modifying the `config.yaml` file:
 
 - **Image dimensions**: `output.width` and `output.height`
 - **Card transparency**: `styling.cardTransparency` (0.0-1.0)
-- **Window controls**: `styling.showWindowControls` (true/false)
-- **Window control style**: `styling.windowControlStyle` ("filled" or "outlined")
+- **Window controls**: `styling.windowControl` ("filled", "outlined", or "hidden")
 - **Line numbers**: `styling.showLineNumbers` (true/false)
 - **File name display**: `styling.showFileName` (true/false)
 - **Background colors**: `styling.backgroundColor` and `styling.gradientMiddleColor`

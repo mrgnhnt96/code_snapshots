@@ -55,7 +55,7 @@ export class CodeSnapshotGenerator {
         const textMetrics = this.calculateTextDimensions(ctx, lines);
 
         // Calculate card dimensions with proper spacing
-        const topSpacing = this.config.styling.showWindowControls ? 45 : 20; // Increased space for window controls
+        const topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 20; // Increased space for window controls
         const cardWidth = Math.min(this.width - 2 * this.padding, textMetrics.maxWidth + 2 * this.cardPadding);
         const cardHeight = Math.min(this.height - 2 * this.padding, textMetrics.totalHeight + topSpacing + this.cardPadding);
 
@@ -78,7 +78,7 @@ export class CodeSnapshotGenerator {
         ctx.fill();
 
         // Draw macOS window controls if enabled
-        if (this.config.styling.showWindowControls) {
+        if (this.config.styling.windowControl !== 'hidden') {
             this.drawWindowControls(ctx, cardX, cardY, cardWidth);
         }
 
@@ -320,7 +320,7 @@ export class CodeSnapshotGenerator {
     private drawWindowControls(ctx: CanvasRenderingContext2D, cardX: number, cardY: number, cardWidth: number): void {
         const controlY = cardY + 15;
         const startX = cardX + 20;
-        const isOutlined = this.config.styling.windowControlStyle === 'outlined';
+        const isOutlined = this.config.styling.windowControl === 'outlined';
         const controlSize = isOutlined ? this.outlinedControlSize : this.windowControlSize;
 
         // Close button (red)

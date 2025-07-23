@@ -11,11 +11,10 @@ export interface SnapshotConfig {
     };
     styling: {
         cardTransparency: number;
-        showWindowControls: boolean;
         backgroundColor: string;
         gradientMiddleColor: string;
         showLineNumbers: boolean;
         showFileName: boolean;
-        windowControlStyle: 'filled' | 'outlined';
+        windowControl: 'filled' | 'outlined' | 'hidden';
     };
 } 

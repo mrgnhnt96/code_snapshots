@@ -11,9 +11,8 @@ output:
 
 styling:
   cardTransparency: 0.8
-  showWindowControls: true
   backgroundColor: "#1e3a8a"
   gradientMiddleColor: "#3b82f6"
   showLineNumbers: true
   showFileName: true
-  windowControlStyle: outlined
+  windowControl: "hidden"
