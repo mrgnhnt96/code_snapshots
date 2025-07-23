@@ -134,13 +134,13 @@
           "oneOf": [
             {
               "type": "object",
-              "description": "Solid color background",
+              "description": "Filled color background",
               "required": ["type", "transparency", "color"],
               "properties": {
                 "type": {
                   "type": "string",
-                  "enum": ["solid"],
-                  "description": "Background type - solid"
+                  "enum": ["filled"],
+                  "description": "Background type - filled"
                 },
                 "transparency": {
                   "type": "number",
@@ -219,7 +219,7 @@
           "oneOf": [
             {
               "type": "object",
-              "description": "Filled background with solid color",
+              "description": "Filled background with filled color",
               "required": ["type", "color"],
               "properties": {
                 "type": {

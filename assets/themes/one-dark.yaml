@@ -16,7 +16,8 @@ output:
 
 styling:
   cardBackground:
-    type: "solid"
+    type: "filled"
+    transparency: 0.8
     color: "#282c34"
   background:
     type: "gradient"

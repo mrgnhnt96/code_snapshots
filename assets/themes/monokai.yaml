@@ -11,10 +11,11 @@ output:
 
 styling:
   cardBackground:
-    type: "solid"
+    type: "filled"
+    transparency: 0.8
     color: "#272822"
   background:
-    type: "solid"
+    type: "filled"
     color: "#1d1e19"
   showLineNumbers: false
   lineNumberStart: 1

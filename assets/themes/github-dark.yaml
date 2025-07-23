@@ -11,7 +11,7 @@ output:
 
 styling:
   cardBackground:
-    type: "solid"
+    type: "filled"
     transparency: 1.0
     color: "#21262d"
   background:

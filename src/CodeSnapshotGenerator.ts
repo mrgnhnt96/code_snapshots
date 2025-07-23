@@ -271,14 +271,14 @@ export class CodeSnapshotGenerator {
                 this.drawSplitLeftRect(ctx, cardX, cardY, cardWidth / 2, cardHeight, borderRadius);
                 ctx.fill();
             } else {
-                // Draw solid overlay without blur
+                // Draw filled overlay without blur
                 const mainRgba = this.hexToRgba(cardBackground.color, mainTransparency);
                 ctx.fillStyle = mainRgba;
                 this.drawSplitLeftRect(ctx, cardX, cardY, cardWidth / 2, cardHeight, borderRadius);
                 ctx.fill();
             }
         } else {
-            // Draw solid background (default or explicit solid)
+            // Draw filled background (default or explicit filled)
             const color = cardBackground?.color || '#1e1e1e';
             const rgba = this.hexToRgba(color, transparency);
             ctx.fillStyle = rgba;
