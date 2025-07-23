@@ -12,7 +12,7 @@ export class CodeSnapshotGenerator {
     private readonly lineHeight = 24;
     private readonly fontSize = 14;
     private readonly windowControlSize = 8;
-    private readonly windowControlSpacing = 6;
+    private readonly windowControlSpacing = 12;
 
     constructor(config: SnapshotConfig) {
         this.config = config;
@@ -116,7 +116,7 @@ export class CodeSnapshotGenerator {
         // Draw line numbers if enabled
         if (this.config.styling.showLineNumbers) {
             this.drawLineNumbers(ctx, x, y, lines.length);
-            x += 40; // Add space for line numbers
+            x += 25; // Reduce space between line numbers and code
         }
 
         // Draw code with syntax highlighting
@@ -125,7 +125,7 @@ export class CodeSnapshotGenerator {
             const lineY = y + i * this.lineHeight;
 
             // Highlight syntax for this line
-            this.drawHighlightedLine(ctx, line, x, lineY, maxWidth - (this.config.styling.showLineNumbers ? 40 : 0));
+            this.drawHighlightedLine(ctx, line, x, lineY, maxWidth - (this.config.styling.showLineNumbers ? 25 : 0));
         }
     }
 
@@ -163,7 +163,7 @@ export class CodeSnapshotGenerator {
 
         // Add space for line numbers if enabled
         if (this.config.styling.showLineNumbers) {
-            maxWidth += 40;
+            maxWidth += 25;
         }
 
         return { maxWidth, totalHeight };
@@ -218,18 +218,30 @@ export class CodeSnapshotGenerator {
                         } else if (nestedToken.type) {
                             const nestedColor = this.getTokenColor(nestedToken.type);
                             ctx.fillStyle = nestedColor;
-                            const content = String(nestedToken.content);
+                            const content = this.extractTokenContent(nestedToken);
                             ctx.fillText(content, currentX, y);
                             currentX += ctx.measureText(content).width;
                         }
                     }
                 } else {
                     // Fallback for other token types
-                    const content = String(token.content);
+                    const content = this.extractTokenContent(token);
                     ctx.fillText(content, currentX, y);
                     currentX += ctx.measureText(content).width;
                 }
             }
+        }
+    }
+
+    private extractTokenContent(token: any): string {
+        if (typeof token.content === 'string') {
+            return token.content;
+        } else if (Array.isArray(token.content)) {
+            return token.content.map((item: any) => this.extractTokenContent(item)).join('');
+        } else if (token.content && typeof token.content === 'object') {
+            return this.extractTokenContent(token.content);
+        } else {
+            return String(token.content || '');
         }
     }
 

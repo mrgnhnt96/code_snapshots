@@ -149,6 +149,6 @@ For advanced customization, you can also modify the constants in `CodeSnapshotGe
 - `cardPadding`: Inner card padding
 - `lineHeight`: Line spacing
 - `fontSize`: Text size
-- `windowControlSize`: Size of window control circles
-- `windowControlSpacing`: Spacing between window controls
+- `windowControlSize`: Size of window control circles (8px)
+- `windowControlSpacing`: Spacing between window controls (12px)
 - Colors in `getTokenColor()` method
