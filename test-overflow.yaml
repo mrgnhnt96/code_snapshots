@@ -1,13 +1,13 @@
-# Code Snapshot Configuration
+# Test Configuration for Overflow Detection
 input:
   file: "./example.dart"
   startLine: 37
   endLine: 46
 
 output:
-  path: "./code-snapshot.png"
-  width: 800
-  height: 600
+  path: "./overflow-test.png"
+  width: 400
+  height: 300
 
 styling:
   cardTransparency: 0.8

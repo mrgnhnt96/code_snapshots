@@ -74,6 +74,9 @@ styling:
   showWindowControls: true # Show macOS-style window controls
   backgroundColor: "#1e3a8a" # Dark blue for gradient
   gradientMiddleColor: "#3b82f6" # Medium blue for gradient middle
+  showLineNumbers: true # Show line numbers
+  showFileName: true # Show file name (future feature)
+  windowControlStyle: "filled" # "filled" or "outlined" circles
 ```
 
 ## Example Output
@@ -82,7 +85,8 @@ The generator will create a PNG image with:
 
 - Blue gradient background (dark blue at top/bottom, lighter in middle)
 - Semi-transparent dark card with rounded corners and macOS-style window controls
-- Syntax-highlighted Dart code with line numbers
+- Syntax-highlighted Dart code with optional line numbers
+- Overflow detection with console warnings for text that extends past card boundaries
 - Color scheme:
   - Keywords: Purple
   - Functions/Methods: Yellow
@@ -122,8 +126,20 @@ You can customize the appearance by modifying the `config.yaml` file:
 - **Image dimensions**: `output.width` and `output.height`
 - **Card transparency**: `styling.cardTransparency` (0.0-1.0)
 - **Window controls**: `styling.showWindowControls` (true/false)
+- **Window control style**: `styling.windowControlStyle` ("filled" or "outlined")
+- **Line numbers**: `styling.showLineNumbers` (true/false)
+- **File name display**: `styling.showFileName` (true/false)
 - **Background colors**: `styling.backgroundColor` and `styling.gradientMiddleColor`
 - **Code selection**: `input.startLine` and `input.endLine`
+
+### Overflow Detection
+
+The generator automatically detects when text extends beyond the card boundaries and logs helpful warnings:
+
+```
+⚠️  Text extends past card horizontally by 239 pixels
+⚠️  Text extends past card vertically by 90 pixels
+```
 
 For advanced customization, you can also modify the constants in `CodeSnapshotGenerator.ts`:
 
@@ -131,4 +147,6 @@ For advanced customization, you can also modify the constants in `CodeSnapshotGe
 - `cardPadding`: Inner card padding
 - `lineHeight`: Line spacing
 - `fontSize`: Text size
+- `windowControlSize`: Size of window control circles
+- `windowControlSpacing`: Spacing between window controls
 - Colors in `getTokenColor()` method

@@ -11,6 +11,8 @@ export class CodeSnapshotGenerator {
     private readonly cardPadding = 20;
     private readonly lineHeight = 24;
     private readonly fontSize = 14;
+    private readonly windowControlSize = 8;
+    private readonly windowControlSpacing = 6;
 
     constructor(config: SnapshotConfig) {
         this.config = config;
@@ -46,14 +48,21 @@ export class CodeSnapshotGenerator {
 
     private drawCodeCard(ctx: CanvasRenderingContext2D, code: string): void {
         const lines = code.split('\n');
-        const maxLineLength = Math.max(...lines.map(line => line.length));
 
-        // Calculate card dimensions
-        const cardWidth = Math.min(this.width - 2 * this.padding, maxLineLength * 8 + 2 * this.cardPadding);
-        const cardHeight = Math.min(this.height - 2 * this.padding, lines.length * this.lineHeight + 2 * this.cardPadding);
+        // Calculate text dimensions
+        ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
+        const textMetrics = this.calculateTextDimensions(ctx, lines);
+
+        // Calculate card dimensions with proper spacing
+        const topSpacing = this.config.styling.showWindowControls ? 50 : 20; // Space for window controls
+        const cardWidth = Math.min(this.width - 2 * this.padding, textMetrics.maxWidth + 2 * this.cardPadding);
+        const cardHeight = Math.min(this.height - 2 * this.padding, textMetrics.totalHeight + topSpacing + this.cardPadding);
 
         const cardX = (this.width - cardWidth) / 2;
         const cardY = (this.height - cardHeight) / 2;
+
+        // Check for overflow and log warnings
+        this.checkOverflow(textMetrics, cardWidth, cardHeight, topSpacing);
 
         // Draw semi-transparent card background
         const transparency = this.config.styling.cardTransparency;
@@ -79,7 +88,8 @@ export class CodeSnapshotGenerator {
         ctx.shadowOffsetY = 0;
 
         // Draw code with syntax highlighting
-        this.drawCode(ctx, code, cardX + this.cardPadding, cardY + this.cardPadding, cardWidth - 2 * this.cardPadding);
+        const codeY = cardY + topSpacing;
+        this.drawCode(ctx, code, cardX + this.cardPadding, codeY, cardWidth - 2 * this.cardPadding);
     }
 
     private drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
@@ -103,8 +113,11 @@ export class CodeSnapshotGenerator {
         ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
         ctx.textBaseline = 'top';
 
-        // Draw line numbers
-        this.drawLineNumbers(ctx, x - 30, y, lines.length);
+        // Draw line numbers if enabled
+        if (this.config.styling.showLineNumbers) {
+            this.drawLineNumbers(ctx, x, y, lines.length);
+            x += 40; // Add space for line numbers
+        }
 
         // Draw code with syntax highlighting
         for (let i = 0; i < lines.length; i++) {
@@ -112,7 +125,7 @@ export class CodeSnapshotGenerator {
             const lineY = y + i * this.lineHeight;
 
             // Highlight syntax for this line
-            this.drawHighlightedLine(ctx, line, x, lineY, maxWidth);
+            this.drawHighlightedLine(ctx, line, x, lineY, maxWidth - (this.config.styling.showLineNumbers ? 40 : 0));
         }
     }
 
@@ -127,6 +140,48 @@ export class CodeSnapshotGenerator {
         }
 
         ctx.textAlign = 'left';
+    }
+
+    private calculateTextDimensions(ctx: CanvasRenderingContext2D, lines: string[]): { maxWidth: number; totalHeight: number } {
+        let maxWidth = 0;
+        const totalHeight = lines.length * this.lineHeight;
+
+        for (const line of lines) {
+            const tokens = Prism.tokenize(line, Prism.languages.dart);
+            let lineWidth = 0;
+
+            for (const token of tokens) {
+                if (typeof token === 'string') {
+                    lineWidth += ctx.measureText(token).width;
+                } else if (token.type) {
+                    lineWidth += ctx.measureText(String(token.content)).width;
+                }
+            }
+
+            maxWidth = Math.max(maxWidth, lineWidth);
+        }
+
+        // Add space for line numbers if enabled
+        if (this.config.styling.showLineNumbers) {
+            maxWidth += 40;
+        }
+
+        return { maxWidth, totalHeight };
+    }
+
+    private checkOverflow(textMetrics: { maxWidth: number; totalHeight: number }, cardWidth: number, cardHeight: number, topSpacing: number): void {
+        const availableWidth = cardWidth - 2 * this.cardPadding;
+        const availableHeight = cardHeight - topSpacing - this.cardPadding;
+
+        if (textMetrics.maxWidth > availableWidth) {
+            const overflowX = textMetrics.maxWidth - availableWidth;
+            console.log(`⚠️  Text extends past card horizontally by ${Math.round(overflowX)} pixels`);
+        }
+
+        if (textMetrics.totalHeight > availableHeight) {
+            const overflowY = textMetrics.totalHeight - availableHeight;
+            console.log(`⚠️  Text extends past card vertically by ${Math.round(overflowY)} pixels`);
+        }
     }
 
     private drawHighlightedLine(ctx: CanvasRenderingContext2D, line: string, x: number, y: number, maxWidth: number): void {
@@ -144,9 +199,31 @@ export class CodeSnapshotGenerator {
                 // Token with type
                 const color = this.getTokenColor(token.type);
                 ctx.fillStyle = color;
-                const content = String(token.content);
-                ctx.fillText(content, currentX, y);
-                currentX += ctx.measureText(content).width;
+
+                // Handle nested tokens properly
+                if (typeof token.content === 'string') {
+                    ctx.fillText(token.content, currentX, y);
+                    currentX += ctx.measureText(token.content).width;
+                } else if (Array.isArray(token.content)) {
+                    // Handle nested token arrays
+                    for (const nestedToken of token.content) {
+                        if (typeof nestedToken === 'string') {
+                            ctx.fillText(nestedToken, currentX, y);
+                            currentX += ctx.measureText(nestedToken).width;
+                        } else if (nestedToken.type) {
+                            const nestedColor = this.getTokenColor(nestedToken.type);
+                            ctx.fillStyle = nestedColor;
+                            const content = String(nestedToken.content);
+                            ctx.fillText(content, currentX, y);
+                            currentX += ctx.measureText(content).width;
+                        }
+                    }
+                } else {
+                    // Fallback for other token types
+                    const content = String(token.content);
+                    ctx.fillText(content, currentX, y);
+                    currentX += ctx.measureText(content).width;
+                }
             }
         }
     }
@@ -178,27 +255,50 @@ export class CodeSnapshotGenerator {
     }
 
     private drawWindowControls(ctx: CanvasRenderingContext2D, cardX: number, cardY: number, cardWidth: number): void {
-        const controlSize = 12;
-        const controlSpacing = 8;
         const controlY = cardY + 15;
         const startX = cardX + 20;
+        const isOutlined = this.config.styling.windowControlStyle === 'outlined';
 
         // Close button (red)
-        ctx.fillStyle = '#ff5f57';
-        ctx.beginPath();
-        ctx.arc(startX, controlY, controlSize, 0, 2 * Math.PI);
-        ctx.fill();
+        if (isOutlined) {
+            ctx.strokeStyle = '#ff5f57';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(startX, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.stroke();
+        } else {
+            ctx.fillStyle = '#ff5f57';
+            ctx.beginPath();
+            ctx.arc(startX, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.fill();
+        }
 
         // Minimize button (yellow)
-        ctx.fillStyle = '#ffbd2e';
-        ctx.beginPath();
-        ctx.arc(startX + controlSize + controlSpacing, controlY, controlSize, 0, 2 * Math.PI);
-        ctx.fill();
+        if (isOutlined) {
+            ctx.strokeStyle = '#ffbd2e';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(startX + this.windowControlSize + this.windowControlSpacing, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.stroke();
+        } else {
+            ctx.fillStyle = '#ffbd2e';
+            ctx.beginPath();
+            ctx.arc(startX + this.windowControlSize + this.windowControlSpacing, controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.fill();
+        }
 
         // Maximize button (green)
-        ctx.fillStyle = '#28ca42';
-        ctx.beginPath();
-        ctx.arc(startX + 2 * (controlSize + controlSpacing), controlY, controlSize, 0, 2 * Math.PI);
-        ctx.fill();
+        if (isOutlined) {
+            ctx.strokeStyle = '#28ca42';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(startX + 2 * (this.windowControlSize + this.windowControlSpacing), controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.stroke();
+        } else {
+            ctx.fillStyle = '#28ca42';
+            ctx.beginPath();
+            ctx.arc(startX + 2 * (this.windowControlSize + this.windowControlSpacing), controlY, this.windowControlSize, 0, 2 * Math.PI);
+            ctx.fill();
+        }
     }
 } 

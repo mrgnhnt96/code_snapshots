@@ -14,5 +14,8 @@ export interface SnapshotConfig {
         showWindowControls: boolean;
         backgroundColor: string;
         gradientMiddleColor: string;
+        showLineNumbers: boolean;
+        showFileName: boolean;
+        windowControlStyle: 'filled' | 'outlined';
     };
 } 
