@@ -199,6 +199,16 @@ export class CodeSnapshotGenerator {
         // Draw code with syntax highlighting
         const codeY = cardY + topSpacing;
         this.drawCode(ctx, code, cardX + this.cardPadding, codeY, cardWidth - 2 * this.cardPadding);
+
+        // Draw lints if specified
+        if (this.config.input.lints && this.config.input.lints.length > 0) {
+            // Adjust x position for line numbers if they are shown
+            let lintX = cardX + this.cardPadding;
+            if (this.config.styling.showLineNumbers) {
+                lintX += 25; // Match the offset used in drawCode method
+            }
+            this.drawLints(ctx, code, lintX, codeY, cardWidth - 2 * this.cardPadding);
+        }
     }
 
     private applyImageBorderRadius(ctx: CanvasRenderingContext2D, radius: number): void {
@@ -631,6 +641,136 @@ export class CodeSnapshotGenerator {
         ctx.beginPath();
         ctx.moveTo(x, y - size * 0.5);
         ctx.lineTo(x, y + size * 0.5);
+        ctx.stroke();
+    }
+
+    private drawLints(ctx: CanvasRenderingContext2D, code: string, x: number, y: number, maxWidth: number): void {
+        if (!this.config.input.lints) return;
+
+        const lines = code.split('\n');
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+
+        // Calculate the offset for line numbers (original file line numbers vs displayed line numbers)
+        const lineOffset = this.config.input.startLine - 1;
+
+        for (const lint of this.config.input.lints) {
+            // Set color based on lint type
+            switch (lint.type) {
+                case 'error':
+                    ctx.strokeStyle = '#ff6b6b'; // Red
+                    break;
+                case 'warning':
+                    ctx.strokeStyle = '#ffa726'; // Orange
+                    break;
+                case 'info':
+                    ctx.strokeStyle = '#42a5f5'; // Blue
+                    break;
+                default:
+                    ctx.strokeStyle = '#ff6b6b'; // Default to red
+            }
+
+            // Convert original file line numbers to displayed line numbers
+            const startLineIndex = lint.start.line - lineOffset - 1;
+            const endLineIndex = lint.end.line - lineOffset - 1;
+
+            // Check if lint is within the displayed code range
+            if (startLineIndex >= 0 && startLineIndex < lines.length) {
+                const lineY = y + startLineIndex * this.lineHeight;
+
+                if (startLineIndex === endLineIndex) {
+                    // Single line lint
+                    this.drawSingleLineLint(ctx, lines[startLineIndex], x, lineY, lint);
+                } else {
+                    // Multi-line lint
+                    this.drawMultiLineLint(ctx, lines, x, y, lint, lineOffset);
+                }
+            }
+        }
+    }
+
+    private drawSingleLineLint(ctx: CanvasRenderingContext2D, line: string, x: number, y: number, lint: any): void {
+        // Calculate character positions
+        const startChar = Math.max(0, lint.start.char - 1);
+        const endChar = Math.min(line.length, lint.end.char);
+
+        if (startChar >= endChar) return;
+
+        // Measure text up to start and end positions
+        ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
+        const textBeforeStart = line.substring(0, startChar);
+        const textBeforeEnd = line.substring(0, endChar);
+
+        const startX = x + ctx.measureText(textBeforeStart).width;
+        const endX = x + ctx.measureText(textBeforeEnd).width;
+
+        // Draw wavy underline
+        this.drawWavyLine(ctx, startX, y + this.lineHeight - 2, endX - startX);
+    }
+
+    private drawMultiLineLint(ctx: CanvasRenderingContext2D, lines: string[], x: number, y: number, lint: any, lineOffset: number): void {
+        const startLineIndex = lint.start.line - lineOffset - 1;
+        const endLineIndex = lint.end.line - lineOffset - 1;
+
+        // Draw start of lint on first line
+        if (startLineIndex >= 0 && startLineIndex < lines.length) {
+            const lineY = y + startLineIndex * this.lineHeight;
+            const startChar = Math.max(0, lint.start.char - 1);
+            const line = lines[startLineIndex];
+
+            ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
+            const textBeforeStart = line.substring(0, startChar);
+            const startX = x + ctx.measureText(textBeforeStart).width;
+
+            // Draw wavy line from start position to end of line
+            this.drawWavyLine(ctx, startX, lineY + this.lineHeight - 2, x + ctx.measureText(line).width - startX);
+        }
+
+        // Draw full lines in between
+        for (let i = startLineIndex + 1; i < endLineIndex; i++) {
+            if (i >= 0 && i < lines.length) {
+                const lineY = y + i * this.lineHeight;
+                const line = lines[i];
+
+                ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
+                const lineWidth = ctx.measureText(line).width;
+
+                this.drawWavyLine(ctx, x, lineY + this.lineHeight - 2, lineWidth);
+            }
+        }
+
+        // Draw end of lint on last line
+        if (endLineIndex >= 0 && endLineIndex < lines.length) {
+            const lineY = y + endLineIndex * this.lineHeight;
+            const endChar = Math.min(lines[endLineIndex].length, lint.end.char);
+            const line = lines[endLineIndex];
+
+            ctx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
+            const textBeforeEnd = line.substring(0, endChar);
+            const endX = x + ctx.measureText(textBeforeEnd).width;
+
+            // Draw wavy line from start of line to end position
+            this.drawWavyLine(ctx, x, lineY + this.lineHeight - 2, endX - x);
+        }
+    }
+
+    private drawWavyLine(ctx: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+        const waveHeight = 2;
+        const waveLength = 4;
+        const segments = Math.ceil(width / waveLength);
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        for (let i = 0; i < segments; i++) {
+            const segmentX = x + i * waveLength;
+            const nextX = Math.min(x + (i + 1) * waveLength, x + width);
+            const midX = (segmentX + nextX) / 2;
+            const direction = i % 2 === 0 ? 1 : -1;
+
+            ctx.quadraticCurveTo(midX, y + direction * waveHeight, nextX, y);
+        }
+
         ctx.stroke();
     }
 } 

@@ -1,8 +1,21 @@
+export interface LintPosition {
+    line: number;
+    char: number;
+}
+
+export interface Lint {
+    start: LintPosition;
+    end: LintPosition;
+    type: 'warning' | 'info' | 'error';
+    message?: string;
+}
+
 export interface SnapshotConfig {
     input: {
         file: string;
         startLine: number;
         endLine: number;
+        lints?: Lint[];
     };
     output: {
         path: string;

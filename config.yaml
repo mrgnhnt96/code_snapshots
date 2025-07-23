@@ -3,6 +3,15 @@ input:
   file: "./example.dart"
   startLine: 37
   endLine: 46
+  lints:
+    - start: { line: 38, char: 3 }
+      end: { line: 38, char: 7 }
+      type: error
+      message: "Unused variable"
+    - start: { line: 40, char: 1 }
+      end: { line: 40, char: 8 }
+      type: error
+      message: "Missing await"
 
 output:
   path: "./code-snapshot.png"

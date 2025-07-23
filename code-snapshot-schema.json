@@ -26,6 +26,70 @@
           "description": "Ending line number (inclusive, 1-based)",
           "minimum": 1,
           "examples": [10, 46]
+        },
+        "lints": {
+          "type": "array",
+          "description": "List of lints to highlight in the code",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "description": "Starting line number (1-based)",
+                    "minimum": 1
+                  },
+                  "char": {
+                    "type": "integer",
+                    "description": "Starting character position (1-based)",
+                    "minimum": 1
+                  }
+                },
+                "required": ["line", "char"],
+                "additionalProperties": false
+              },
+              "end": {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "description": "Ending line number (1-based)",
+                    "minimum": 1
+                  },
+                  "char": {
+                    "type": "integer",
+                    "description": "Ending character position (1-based)",
+                    "minimum": 1
+                  }
+                },
+                "required": ["line", "char"],
+                "additionalProperties": false
+              },
+              "type": {
+                "type": "string",
+                "enum": ["warning", "info", "error"],
+                "description": "Type of lint"
+              },
+              "message": {
+                "type": "string",
+                "description": "Optional lint message"
+              }
+            },
+            "required": ["start", "end", "type"],
+            "additionalProperties": false
+          },
+          "examples": [
+            [
+              {
+                "start": { "line": 3, "char": 5 },
+                "end": { "line": 3, "char": 12 },
+                "type": "warning",
+                "message": "Unused variable"
+              }
+            ]
+          ]
         }
       },
       "additionalProperties": false
