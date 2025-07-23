@@ -1,0 +1,30 @@
+{
+  "name": "code-snapshot-generator",
+  "version": "1.0.0",
+  "description": "A TypeScript project that creates beautiful code snapshots with Dart syntax highlighting",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "code",
+    "snapshot",
+    "dart",
+    "syntax-highlighting"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "prismjs": "^1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/prismjs": "^1.26.3",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.0"
+  }
+}
