@@ -225,6 +225,12 @@
           "default": true,
           "examples": [true, false]
         },
+        "showLintMessages": {
+          "type": "boolean",
+          "description": "Show lint messages as tooltips or callouts",
+          "default": false,
+          "examples": [true, false]
+        },
         "fileName": {
           "type": ["string", "null"],
           "description": "File name to display in the header. Set to null or omit to hide the file name",

@@ -73,7 +73,19 @@ export class CodeSnapshotGenerator {
         }
 
         const contentWidth = textMetrics.maxWidth + 2 * this.cardPadding;
-        const contentHeight = textMetrics.totalHeight + topSpacing + this.cardPadding;
+        let contentHeight = textMetrics.totalHeight + topSpacing + this.cardPadding;
+
+        // Add space for lint messages card if enabled
+        if (this.config.styling.showLintMessages && this.config.input.lints && this.config.input.lints.length > 0) {
+            const lintsWithMessages = this.config.input.lints.filter(lint => lint.message);
+            if (lintsWithMessages.length > 0) {
+                const gap = 24;
+                const lineHeight = 20;
+                const itemSpacing = 8;
+                const lintCardHeight = lintsWithMessages.length * (lineHeight + itemSpacing) - itemSpacing + 2 * this.cardPadding;
+                contentHeight += gap + lintCardHeight;
+            }
+        }
 
         // Get margin values
         const horizontalMargin = this.config.styling.cardMargin?.horizontal ?? 40;
@@ -161,8 +173,21 @@ export class CodeSnapshotGenerator {
         const cardWidth = contentWidth;
         const cardHeight = contentHeight;
 
+        // Calculate total height needed for both cards when lint messages are enabled
+        let totalCardsHeight = cardHeight;
+        if (this.config.styling.showLintMessages && this.config.input.lints && this.config.input.lints.length > 0) {
+            const lintsWithMessages = this.config.input.lints.filter(lint => lint.message);
+            if (lintsWithMessages.length > 0) {
+                const gap = 24;
+                const lineHeight = 20;
+                const itemSpacing = 8;
+                const lintCardHeight = lintsWithMessages.length * (lineHeight + itemSpacing) - itemSpacing + 2 * this.cardPadding;
+                totalCardsHeight += gap + lintCardHeight;
+            }
+        }
+
         const cardX = (this.width - cardWidth) / 2;
-        const cardY = (this.height - cardHeight) / 2;
+        const cardY = (this.height - totalCardsHeight) / 2;
 
         // Check for overflow and log warnings
         this.checkOverflow(textMetrics, cardWidth, cardHeight, topSpacing);
@@ -208,6 +233,11 @@ export class CodeSnapshotGenerator {
                 lintX += 25; // Match the offset used in drawCode method
             }
             this.drawLints(ctx, code, lintX, codeY, cardWidth - 2 * this.cardPadding);
+        }
+
+        // Draw lint messages card if enabled
+        if (this.config.styling.showLintMessages && this.config.input.lints && this.config.input.lints.length > 0) {
+            this.drawLintMessagesCard(ctx, cardX, cardY, cardWidth, cardHeight);
         }
     }
 
@@ -685,6 +715,8 @@ export class CodeSnapshotGenerator {
                     // Multi-line lint
                     this.drawMultiLineLint(ctx, lines, x, y, lint, lineOffset);
                 }
+
+
             }
         }
     }
@@ -772,5 +804,95 @@ export class CodeSnapshotGenerator {
         }
 
         ctx.stroke();
+    }
+
+    private drawLintMessagesCard(ctx: CanvasRenderingContext2D, cardX: number, cardY: number, cardWidth: number, cardHeight: number): void {
+        if (!this.config.input.lints) return;
+
+        // Filter lints that have messages
+        const lintsWithMessages = this.config.input.lints.filter(lint => lint.message);
+        if (lintsWithMessages.length === 0) return;
+
+        // Calculate the gap between cards (24 pixels)
+        const gap = 24;
+
+        // Calculate lint messages card position and dimensions
+        const lintCardX = cardX;
+        const lintCardY = cardY + cardHeight + gap;
+        const lintCardWidth = cardWidth;
+
+        // Calculate content dimensions
+        const lineHeight = 20;
+        const itemSpacing = 8;
+        const contentHeight = lintsWithMessages.length * (lineHeight + itemSpacing) - itemSpacing;
+        const lintCardHeight = contentHeight + 2 * this.cardPadding;
+
+        // Draw lint messages card background
+        const transparency = this.config.styling.cardTransparency;
+        ctx.fillStyle = `rgba(30, 30, 30, ${transparency})`;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 10;
+
+        // Rounded rectangle for lint card
+        const borderRadius = this.config.styling.borderRadius ?? 15;
+        this.drawRoundedRect(ctx, lintCardX, lintCardY, lintCardWidth, lintCardHeight, borderRadius);
+        ctx.fill();
+
+        // Reset shadow
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Draw lint messages
+        const contentX = lintCardX + this.cardPadding;
+        const contentY = lintCardY + this.cardPadding;
+
+        ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.textBaseline = 'top';
+
+        for (let i = 0; i < lintsWithMessages.length; i++) {
+            const lint = lintsWithMessages[i];
+            const messageY = contentY + i * (lineHeight + itemSpacing);
+
+            // Draw lint type indicator
+            const indicatorSize = 8;
+            const indicatorX = contentX;
+            const indicatorY = messageY + (lineHeight - indicatorSize) / 2;
+
+            // Set color based on lint type
+            let indicatorColor: string;
+            let textColor: string;
+
+            switch (lint.type) {
+                case 'error':
+                    indicatorColor = '#ef4444'; // Red
+                    textColor = '#fca5a5';
+                    break;
+                case 'warning':
+                    indicatorColor = '#f59e0b'; // Orange
+                    textColor = '#fcd34d';
+                    break;
+                case 'info':
+                    indicatorColor = '#3b82f6'; // Blue
+                    textColor = '#93c5fd';
+                    break;
+                default:
+                    indicatorColor = '#ef4444';
+                    textColor = '#fca5a5';
+            }
+
+            // Draw indicator circle
+            ctx.fillStyle = indicatorColor;
+            ctx.beginPath();
+            ctx.arc(indicatorX + indicatorSize / 2, indicatorY + indicatorSize / 2, indicatorSize / 2, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Draw message text
+            ctx.fillStyle = textColor;
+            ctx.fillText(lint.message!, indicatorX + indicatorSize + 8, messageY);
+        }
     }
 } 
