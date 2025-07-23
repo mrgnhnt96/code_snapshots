@@ -16,3 +16,6 @@ styling:
   showLineNumbers: true
   showFileName: true
   windowControl: "hidden"
+  cardMargin:
+    horizontal: 40
+    vertical: 40

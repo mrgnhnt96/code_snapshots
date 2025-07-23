@@ -16,5 +16,9 @@ export interface SnapshotConfig {
         showLineNumbers: boolean;
         showFileName: boolean;
         windowControl: 'filled' | 'outlined' | 'hidden';
+        cardMargin?: {
+            horizontal?: number;
+            vertical?: number;
+        };
     };
 } 

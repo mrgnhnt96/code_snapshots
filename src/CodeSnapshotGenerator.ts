@@ -5,9 +5,8 @@ import { SnapshotConfig } from './types';
 
 export class CodeSnapshotGenerator {
     private readonly config: SnapshotConfig;
-    private readonly width: number;
-    private readonly height: number;
-    private readonly padding = 40;
+    private width: number;
+    private height: number;
     private readonly cardPadding = 20;
     private readonly lineHeight = 24;
     private readonly fontSize = 14;
@@ -21,8 +20,15 @@ export class CodeSnapshotGenerator {
     }
 
     async generateSnapshot(code: string, outputPath: string): Promise<void> {
-        const canvas = createCanvas(this.width, this.height);
+        // Calculate proper dimensions when auto-sizing
+        const { canvasWidth, canvasHeight } = this.calculateCanvasDimensions(code);
+
+        const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
+
+        // Update width/height for this generation
+        this.width = canvasWidth;
+        this.height = canvasHeight;
 
         // Draw gradient background
         this.drawGradientBackground(ctx);
@@ -34,6 +40,45 @@ export class CodeSnapshotGenerator {
         const buffer = canvas.toBuffer('image/png');
         const fs = await import('fs');
         fs.writeFileSync(outputPath, buffer);
+    }
+
+    private calculateCanvasDimensions(code: string): { canvasWidth: number; canvasHeight: number } {
+        // Create a temporary canvas to measure text
+        const tempCanvas = createCanvas(1, 1);
+        const tempCtx = tempCanvas.getContext('2d');
+
+        const lines = code.split('\n');
+        tempCtx.font = `${this.fontSize}px 'Monaco', 'Menlo', 'Ubuntu Mono', monospace`;
+        const textMetrics = this.calculateTextDimensions(tempCtx, lines);
+
+        // Calculate content dimensions
+        const topSpacing = this.config.styling.windowControl !== 'hidden' ? 45 : 20;
+        const contentWidth = textMetrics.maxWidth + 2 * this.cardPadding;
+        const contentHeight = textMetrics.totalHeight + topSpacing + this.cardPadding;
+
+        // Get margin values
+        const horizontalMargin = this.config.styling.cardMargin?.horizontal ?? 40;
+        const verticalMargin = this.config.styling.cardMargin?.vertical ?? 40;
+
+        // Calculate canvas dimensions
+        let canvasWidth: number;
+        let canvasHeight: number;
+
+        if (this.config.output.width != null) {
+            canvasWidth = this.config.output.width;
+        } else {
+            // Auto width: content width + margins
+            canvasWidth = contentWidth + 2 * horizontalMargin;
+        }
+
+        if (this.config.output.height != null) {
+            canvasHeight = this.config.output.height;
+        } else {
+            // Auto height: content height + margins
+            canvasHeight = contentHeight + 2 * verticalMargin;
+        }
+
+        return { canvasWidth, canvasHeight };
     }
 
     private drawGradientBackground(ctx: CanvasRenderingContext2D): void {
@@ -60,12 +105,13 @@ export class CodeSnapshotGenerator {
         const contentWidth = textMetrics.maxWidth + 2 * this.cardPadding;
         const contentHeight = textMetrics.totalHeight + topSpacing + this.cardPadding;
 
-        // If width/height are null/undefined, use content size with padding
-        const maxCardWidth = this.config.output.width != null ? this.width - 2 * this.padding : contentWidth + 2 * this.padding;
-        const maxCardHeight = this.config.output.height != null ? this.height - 2 * this.padding : contentHeight + 2 * this.padding;
+        // Get configurable margin values with defaults
+        const horizontalMargin = this.config.styling.cardMargin?.horizontal ?? 40;
+        const verticalMargin = this.config.styling.cardMargin?.vertical ?? 40;
 
-        const cardWidth = Math.min(maxCardWidth, contentWidth);
-        const cardHeight = Math.min(maxCardHeight, contentHeight);
+        // Card dimensions are now content size (canvas is sized to accommodate card + margins)
+        const cardWidth = contentWidth;
+        const cardHeight = contentHeight;
 
         const cardX = (this.width - cardWidth) / 2;
         const cardY = (this.height - cardHeight) / 2;

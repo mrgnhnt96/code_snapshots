@@ -76,6 +76,9 @@ styling:
   showLineNumbers: true # Show line numbers
   showFileName: true # Show file name (future feature)
   windowControl: "filled" # "filled", "outlined", or "hidden"
+  cardMargin:
+    horizontal: 40 # Horizontal margin around the card
+    vertical: 40 # Vertical margin around the card
 ```
 
 ### VS Code IntelliSense
@@ -132,6 +135,7 @@ You can customize the appearance by modifying the `config.yaml` file:
 - **Line numbers**: `styling.showLineNumbers` (true/false)
 - **File name display**: `styling.showFileName` (true/false)
 - **Background colors**: `styling.backgroundColor` and `styling.gradientMiddleColor`
+- **Card margin**: `styling.cardMargin.horizontal` and `styling.cardMargin.vertical`
 - **Code selection**: `input.startLine` and `input.endLine`
 
 ### Overflow Detection
@@ -147,7 +151,6 @@ The generator automatically detects when code extends beyond the card's content 
 
 For advanced customization, you can also modify the constants in `CodeSnapshotGenerator.ts`:
 
-- `padding`: Outer padding
 - `cardPadding`: Inner card padding
 - `lineHeight`: Line spacing
 - `fontSize`: Text size

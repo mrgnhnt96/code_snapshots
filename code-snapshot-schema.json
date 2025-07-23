@@ -105,6 +105,29 @@
           "enum": ["filled", "outlined", "hidden"],
           "default": "filled",
           "examples": ["filled", "outlined", "hidden"]
+        },
+        "cardMargin": {
+          "type": "object",
+          "description": "Card margin configuration around the code card",
+          "properties": {
+            "horizontal": {
+              "type": "number",
+              "description": "Minimum horizontal padding in pixels",
+              "minimum": 0,
+              "maximum": 200,
+              "default": 40,
+              "examples": [20, 40, 60, 80]
+            },
+            "vertical": {
+              "type": "number",
+              "description": "Minimum vertical padding in pixels",
+              "minimum": 0,
+              "maximum": 200,
+              "default": 40,
+              "examples": [20, 40, 60, 80]
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
