@@ -2,6 +2,16 @@
 
 A TypeScript project that creates beautiful code snapshots with Dart syntax highlighting, similar to the image you provided. The generator creates a semi-transparent card with syntax-highlighted code on a gradient background.
 
+## Showcase
+
+Here are some examples of what you can create:
+
+<div align="center">
+  <img src="./assets/dracula-snapshot.png" alt="Dracula Theme" width="320" />
+  <img src="./assets/github-dark-snapshot.png" alt="GitHub Dark Theme" width="320" />
+  <img src="./assets/cyberpunk-snapshot.png" alt="Cyberpunk Theme" width="320" />
+</div>
+
 ## Features
 
 - 🎨 Beautiful gradient background
@@ -322,6 +332,7 @@ You can customize the appearance by modifying any configuration file. The includ
 2. Modify the colors and settings to match your preferences
 
 3. Generate your custom theme:
+
    ```bash
    npm run dev ./my-custom-theme.yaml
    ```
