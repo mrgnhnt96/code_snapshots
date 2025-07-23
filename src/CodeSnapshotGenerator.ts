@@ -498,7 +498,7 @@ export class CodeSnapshotGenerator {
     }
 
     private drawWindowControls(ctx: CanvasRenderingContext2D, cardX: number, cardY: number, cardWidth: number): void {
-        const controlY = cardY + 15;
+        const controlY = cardY + 19;
         const startX = cardX + 20;
         const isOutlined = this.config.styling.windowControl === 'outlined';
         const controlSize = this.windowControlSize;
